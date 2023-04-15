@@ -9,7 +9,6 @@ import 'package:levelup/navbar.dart';
 import 'package:levelup/registration.dart';
 import 'package:levelup/store_dashboard.dart';
 import 'package:levelup/timings.dart';
-import 'package:provider/provider.dart';
 import 'dashboard.dart';
 import 'package:levelup/feedback.dart';
 import 'package:levelup/profile_screen.dart';
