@@ -5,7 +5,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:levelup/booking_page.dart';
 import 'package:levelup/details_page.dart';
 import 'package:levelup/login.dart';
-import 'package:levelup/model/cart_model.dart';
 import 'package:levelup/navbar.dart';
 import 'package:levelup/registration.dart';
 import 'package:levelup/store_dashboard.dart';
@@ -50,38 +49,36 @@ class _HomePageState extends State<HomePage> {
   var Pages = [Dashboard(), StorePage(), Feed_Back(), ProfileDashboard()];
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => CartModel(),
-        child: Scaffold(
-          body: Pages[currentIndex],
-          bottomNavigationBar: Container(
-            color: Colors.black,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: GNav(
-                onTabChange: (i) {
-                  setState(() {
-                    currentIndex = i;
-                  });
-                },
-                backgroundColor: Colors.black,
-                color: Colors.white,
-                activeColor: Colors.white,
-                tabBackgroundColor: Color.fromARGB(255, 43, 43, 43),
-                padding: EdgeInsets.all(16),
-                gap: 8,
-                tabs: const [
-                  GButton(
-                    icon: Icons.home_filled,
-                    text: 'Home',
-                  ),
-                  GButton(icon: Icons.store_rounded, text: 'Store'),
-                  GButton(icon: Icons.feedback_rounded, text: 'Feedback'),
-                  GButton(icon: Icons.person_2_rounded, text: 'Profile'),
-                ],
+    return Scaffold(
+      body: Pages[currentIndex],
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          child: GNav(
+            onTabChange: (i) {
+              setState(() {
+                currentIndex = i;
+              });
+            },
+            backgroundColor: Colors.black,
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBackgroundColor: Color.fromARGB(255, 43, 43, 43),
+            padding: EdgeInsets.all(16),
+            gap: 8,
+            tabs: const [
+              GButton(
+                icon: Icons.home_filled,
+                text: 'Home',
               ),
-            ),
+              GButton(icon: Icons.store_rounded, text: 'Store'),
+              GButton(icon: Icons.feedback_rounded, text: 'Feedback'),
+              GButton(icon: Icons.person_2_rounded, text: 'Profile'),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
