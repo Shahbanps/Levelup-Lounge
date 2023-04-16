@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:levelup/booking_page.dart';
 import 'package:levelup/details_page.dart';
@@ -61,9 +62,9 @@ class _HomePageState extends State<HomePage> {
               });
             },
             backgroundColor: Colors.black,
-            color: Colors.white,
-            activeColor: Colors.white,
-            tabBackgroundColor: Color.fromARGB(255, 43, 43, 43),
+            color: Color.fromARGB(255, 255, 255, 255),
+            activeColor: Color.fromARGB(255, 255, 255, 255),
+            tabBackgroundColor: Color.fromARGB(255, 31, 31, 31),
             padding: EdgeInsets.all(16),
             gap: 8,
             tabs: const [

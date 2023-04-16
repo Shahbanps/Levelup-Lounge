@@ -34,14 +34,6 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
             ),
           ),
         ),
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.notifications),
-        //     onPressed: () {
-        //       // Handle notification icon press here
-        //     },
-        //   ),
-        // ],
         backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
       body: SingleChildScrollView(

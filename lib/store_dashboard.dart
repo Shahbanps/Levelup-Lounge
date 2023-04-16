@@ -11,17 +11,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Store',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.bebasNeueTextTheme(
-          Theme.of(context).textTheme,
-        ).copyWith(
-          headline6: GoogleFonts.bebasNeue(
-            textStyle: Theme.of(context).textTheme.headline6,
-            fontSize: 28,
-            color: Colors.yellow,
-          ),
-        ),
-      ),
+          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.bebasNeueTextTheme()),
       home: StorePage(),
     );
   }
@@ -124,28 +115,40 @@ class _StorePageState extends State<StorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Simple Store',
-          style: GoogleFonts.bebasNeue(
-            fontSize: 15,
-            color: Color.fromARGB(255, 224, 224, 224),
+        backgroundColor: Colors.black,
+        elevation: 100,
+        title: Center(
+          child: Text(
+            'Store',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 35,
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Container(
+        height: 800,
+        color: Color.fromARGB(255, 25, 25, 25),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Products:',
+              'Products',
               style: GoogleFonts.bebasNeue(
-                fontSize: 24,
-                color: Color.fromARGB(255, 224, 224, 224),
+                fontSize: 27,
+                color: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 2),
+            Divider(
+              color: Colors.white,
+              height: 0,
+              thickness: 0.3,
+            ),
             Expanded(
+              flex: 4,
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -154,98 +157,168 @@ class _StorePageState extends State<StorePage> {
                 itemCount: _products.length,
                 itemBuilder: (BuildContext context, int index) {
                   Product product = _products[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Card(
+                      color: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Color.fromARGB(
+                              255, 26, 26, 26), // set the border color here
+                          width: 0.5, // set the width of the border
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      elevation: 4.0,
+                      child: InkWell(
+                        onTap: () => _addToCart(product),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.black,
+                              ),
+                              padding: EdgeInsets.all(10.0),
+                              child: product.imagePath != null
+                                  ? Image.asset(
+                                      product.imagePath!,
+                                      height: 100.0,
+                                      width: 100.0,
+                                    )
+                                  : Icon(
+                                      Icons.image,
+                                      size: 50.0,
+                                    ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              product.name,
+                              style: GoogleFonts.bebasNeue(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              '\$${product.price.toStringAsFixed(2)}',
+                              style: GoogleFonts.bebasNeue(
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 226, 200, 0),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 6),
+            // Text(
+            //   'Cart:',
+            //   style: GoogleFonts.bebasNeue(
+            //     fontSize: 26,
+            //     color: Color.fromARGB(255, 255, 255, 255),
+            //   ),
+            // ),
+            Container(
+              decoration: BoxDecoration(
+                // ignore: prefer_const_literals_to_create_immutables
+                boxShadow: [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 143, 143, 143), //New
+                      blurRadius: 0.2,
+                      offset: Offset(0, 0.2))
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 3, 8, 3),
+                    child: Text(
+                      "Cart",
+                      style: GoogleFonts.bebasNeue(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 7),
+            Expanded(
+              child: Container(
+                // color: Colors.black,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  border: Border.all(color: Color.fromARGB(255, 22, 22, 22)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListView.builder(
+                  itemCount: _cartItems.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    CartItem cartItem = _cartItems[index];
+                    return ListTile(
+                      title: Text(
+                        '${cartItem.product.name} x ${cartItem.quantity}',
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.remove_shopping_cart),
+                        color: Colors.white,
+                        onPressed: () => _removeFromCart(cartItem),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              '   Total:  \$${_calculateTotal().toStringAsFixed(2)}',
+              style: GoogleFonts.bebasNeue(
+                fontSize: 26,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+            ),
+            SizedBox(height: 5),
+            Divider(
+              color: Colors.white,
+              height: 0,
+              thickness: 0.3,
+            ),
+            SizedBox(height: 5),
+            Center(
+              child: ElevatedButton(
+                onPressed: _pay,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(175, 5, 175, 5),
+                  child: Text(
+                    'Pay',
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.yellow),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    elevation: 4.0,
-                    child: InkWell(
-                      onTap: () => _addToCart(product),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.black,
-                            ),
-                            padding: EdgeInsets.all(10.0),
-                            child: product.imagePath != null
-                                ? Image.asset(
-                                    product.imagePath!,
-                                    height: 100.0,
-                                    width: 100.0,
-                                  )
-                                : Icon(
-                                    Icons.image,
-                                    size: 50.0,
-                                  ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            product.name,
-                            style: GoogleFonts.bebasNeue(
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 224, 224, 224),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            '${product.price.toStringAsFixed(2)}',
-                            style: GoogleFonts.bebasNeue(
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 224, 224, 224),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Cart:',
-              style: GoogleFonts.bebasNeue(
-                fontSize: 24,
-                color: Color.fromARGB(255, 224, 224, 224),
-              ),
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _cartItems.length,
-                itemBuilder: (BuildContext context, int index) {
-                  CartItem cartItem = _cartItems[index];
-                  return ListTile(
-                    title: Text(
-                      '${cartItem.product.name} x ${cartItem.quantity}',
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 18,
-                        color: Color.fromARGB(255, 224, 224, 224),
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.remove_shopping_cart),
-                      onPressed: () => _removeFromCart(cartItem),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Total: ${_calculateTotal().toStringAsFixed(2)}',
-              style: GoogleFonts.bebasNeue(
-                fontSize: 24,
-                color: Color.fromARGB(255, 224, 224, 224),
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _pay,
-              child: Text('Pay'),
             ),
           ],
         ),

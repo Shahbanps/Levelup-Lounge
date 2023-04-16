@@ -257,7 +257,7 @@ buildCheckItem(title) {
         children: <Widget>[
           Icon(
             Icons.check_circle,
-            color: Colors.yellow,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
           SizedBox(
             height: 10,
@@ -266,7 +266,7 @@ buildCheckItem(title) {
             title,
             style: GoogleFonts.bebasNeue(
               fontSize: 15,
-              color: Colors.yellow,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
         ],
