@@ -63,44 +63,33 @@ class Feed_Back extends StatelessWidget {
             ),
             buildNuberField(),
             Spacer(),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BookingPage()),
-                        );
-                      },
-                      // ignore: sort_child_properties_last
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Submit",
-                            style: GoogleFonts.bebasNeue(
-                              fontSize: 27,
-                              color: Color.fromARGB(255, 3, 3, 3),
-                            ),
-                          ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(10),
-                        backgroundColor: Color.fromARGB(255, 250, 227, 54),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Feed_Back()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(120, 5, 160, 5),
+                child: Text(
+                  '      Submit',
+                  style: GoogleFonts.bebasNeue(
+                    fontSize: 25,
+                    color: Color.fromARGB(255, 0, 0, 0),
                   ),
-                )
-              ],
-            )
+                ),
+              ),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.yellow),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

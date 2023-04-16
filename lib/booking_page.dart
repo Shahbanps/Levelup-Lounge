@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/circles.dart';
+import 'package:levelup/feedback.dart';
 import 'package:levelup/timings.dart';
 
 class BookingPage extends StatefulWidget {
@@ -236,7 +237,7 @@ class _BookingPageState extends State<BookingPage> {
               thickness: 0.3,
             ),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.fromLTRB(15.0, 5, 15, 5),
               child: Container(
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 28, 28, 28),
@@ -244,14 +245,17 @@ class _BookingPageState extends State<BookingPage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 width: 500,
-                height: 334,
+                height: 350,
                 child: Container(
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
                         Text(
                           "Available slot timings",
-                          style: TextStyle(color: Colors.white, fontSize: 10),
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
                         ),
                         Container(
                             height: 300,
@@ -321,13 +325,19 @@ class _BookingPageState extends State<BookingPage> {
                     )),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Text(
               "Select where you wanna sit.",
-              style: TextStyle(color: Colors.white, fontSize: 10),
+              style: GoogleFonts.bebasNeue(
+                fontSize: 16,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
             ),
             Container(
                 color: Color.fromARGB(255, 0, 0, 0),
-                height: 200,
+                height: 190,
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                 child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
@@ -381,45 +391,29 @@ class _BookingPageState extends State<BookingPage> {
                     );
                   },
                 )),
-            Container(
-              margin: EdgeInsets.only(top: 0.0),
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 3),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookingPage()),
-                  );
-                },
-                // ignore: sort_child_properties_last
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Book slots",
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 27,
-                        color: Color.fromARGB(255, 3, 3, 3),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.bookmark_add_outlined,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BookingPage(),
-                        ));
-                      },
-                    ),
-                  ],
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Feed_Back()),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(120, 5, 120, 5),
+                child: Text(
+                  'Book Slots',
+                  style: GoogleFonts.bebasNeue(
+                    fontSize: 25,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(5),
-                  backgroundColor: Color.fromARGB(255, 250, 227, 54),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              ),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.yellow),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
