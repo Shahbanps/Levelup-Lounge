@@ -6,8 +6,10 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/carousel.dart';
-import 'package:levelup/details_page.dart';
+import 'package:levelup/drivng_details_page.dart';
+import 'package:levelup/pc_details_page.dart';
 import 'package:levelup/registration.dart';
+import 'package:levelup/squad_details_page.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -140,7 +142,7 @@ class Dashboard extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RegistrationPage(),
+                        builder: (context) => SquadDetails(),
                       ));
                     },
                   ),
@@ -163,7 +165,7 @@ class Dashboard extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RegistrationPage(),
+                        builder: (context) => DrivingDetails(),
                       ));
                     },
                   ),

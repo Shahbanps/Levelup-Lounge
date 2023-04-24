@@ -3,16 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:levelup/booking_page.dart';
-import 'package:levelup/details_page.dart';
+import 'package:levelup/pc_booking_page.dart';
+import 'package:levelup/pc_details_page.dart';
 import 'package:levelup/login.dart';
 import 'package:levelup/navbar.dart';
 import 'package:levelup/registration.dart';
+import 'package:levelup/squad_booking_page.dart';
+import 'package:levelup/squad_details_page.dart';
 import 'package:levelup/store_dashboard.dart';
 import 'package:levelup/timings.dart';
 import 'dashboard.dart';
 import 'package:levelup/feedback.dart';
 import 'package:levelup/profile_screen.dart';
+
+import 'driving_booking_page.dart';
+import 'drivng_details_page.dart';
 
 void main() {
   runApp(MyApp());

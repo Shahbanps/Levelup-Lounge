@@ -8,14 +8,14 @@ import 'package:levelup/circles.dart';
 import 'package:levelup/feedback.dart';
 import 'package:levelup/timings.dart';
 
-class BookingPage extends StatefulWidget {
-  BookingPage({super.key});
+class DrivingBookingPage extends StatefulWidget {
+  DrivingBookingPage({super.key});
 
   @override
-  State<BookingPage> createState() => _BookingPageState();
+  State<DrivingBookingPage> createState() => SquadCBookingPageState();
 }
 
-class _BookingPageState extends State<BookingPage> {
+class SquadCBookingPageState extends State<DrivingBookingPage> {
   final List dates = [
     'date 1',
     'date 2',
@@ -48,7 +48,7 @@ class _BookingPageState extends State<BookingPage> {
             },
           ),
           title: Text(
-            'PC Booking',
+            'Driving Setup Booking',
             style: GoogleFonts.bebasNeue(
               fontSize: 25,
               color: Colors.white,
@@ -87,7 +87,7 @@ class _BookingPageState extends State<BookingPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8.0, 3, 8, 3),
                     child: Text(
-                      "Individual  .  PC's  .  100₹  .  per slot / per person",
+                      "Driving  .  Setup  .  350₹  .  per slot / per person",
                       style: GoogleFonts.bebasNeue(
                         fontSize: 15,
                         color: Colors.white,
@@ -158,73 +158,6 @@ class _BookingPageState extends State<BookingPage> {
                           ),
                           value: '2',
                         ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("3",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '3',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("4",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '4',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("5",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '5',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("6",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '6',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("7",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '7',
-                        ),
-                        DropdownMenuItem(
-                          // ignore: sort_child_properties_last
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("8",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '8',
-                        )
                       ],
                     ),
                   )
@@ -329,7 +262,7 @@ class _BookingPageState extends State<BookingPage> {
               height: 10,
             ),
             Text(
-              "Select where you wanna sit.",
+              "Select the where you wanna sit.",
               style: GoogleFonts.bebasNeue(
                 fontSize: 16,
                 color: Color.fromARGB(255, 255, 255, 255),
@@ -347,7 +280,7 @@ class _BookingPageState extends State<BookingPage> {
                       child: GridView.builder(
                         // physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 6,
+                          crossAxisCount: 4,
                           crossAxisSpacing: 30,
                           mainAxisSpacing: 19,
                           childAspectRatio:
@@ -386,7 +319,7 @@ class _BookingPageState extends State<BookingPage> {
                             child: Text('$index'),
                           );
                         },
-                        itemCount: 12,
+                        itemCount: 4,
                       ),
                     );
                   },

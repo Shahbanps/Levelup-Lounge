@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/booking_page.dart';
+import 'package:levelup/pc_booking_page.dart';
 import 'package:levelup/dashboard.dart';
 
-class Details extends StatefulWidget {
-  const Details({super.key});
+import 'driving_booking_page.dart';
+
+class DrivingDetails extends StatefulWidget {
+  const DrivingDetails({super.key});
 
   @override
-  State<Details> createState() => _DetailsState();
+  State<DrivingDetails> createState() => _SquadDetailsState();
 }
 
-class _DetailsState extends State<Details> {
+class _SquadDetailsState extends State<DrivingDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,14 +71,14 @@ class _DetailsState extends State<Details> {
                         height: 15,
                       ),
                       Text(
-                        "PC",
+                        "Driving Setup",
                         style: GoogleFonts.bebasNeue(
                           fontSize: 90,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        "A Privileged Gaming Corner",
+                        "A True to Life Driving Environment",
                         style: GoogleFonts.bebasNeue(
                           fontSize: 15,
                           color: Color.fromARGB(255, 224, 224, 224),
@@ -96,7 +98,7 @@ class _DetailsState extends State<Details> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => BookingPage()),
+                                builder: (context) => DrivingBookingPage()),
                           );
                         },
                         // ignore: sort_child_properties_last
@@ -117,7 +119,7 @@ class _DetailsState extends State<Details> {
                               ),
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => BookingPage(),
+                                  builder: (context) => DrivingBookingPage(),
                                 ));
                               },
                             ),
@@ -139,10 +141,11 @@ class _DetailsState extends State<Details> {
                   margin: EdgeInsets.only(top: 0.0),
                   padding: EdgeInsets.fromLTRB(11, 10, 0, 10),
                   child: Text(
-                    "Experience an immersive and\nengaging gaming experience at\nour PC gaming center with powerful hardware, a variety of games, and a friendly community. Connect with others and enjoy the ultimate gaming experience",
+                    // "Team up with your friends and \n dominat the competition in our \nprivate squad rooms - book now for the ultimate gaming experience",
+                    "Experience the thrill of the race and book your spot in our state-of-the-art driving setups today",
                     textDirection: TextDirection.rtl,
                     style: GoogleFonts.bebasNeue(
-                      fontSize: 30,
+                      fontSize: 40,
                       color: Color.fromARGB(255, 255, 255, 255),
                     ),
                   ),
