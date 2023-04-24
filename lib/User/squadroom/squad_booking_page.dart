@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/circles.dart';
-import 'package:levelup/feedback.dart';
-import 'package:levelup/timings.dart';
+
+import '../circles.dart';
+import '../feedback.dart';
 
 class SquadBookingPage extends StatefulWidget {
   SquadBookingPage({super.key});

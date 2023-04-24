@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/pc_booking_page.dart';
-import 'package:levelup/dashboard.dart';
+
+import 'pc_booking_page.dart';
 
 class Details extends StatefulWidget {
   const Details({super.key});

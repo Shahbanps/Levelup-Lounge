@@ -5,11 +5,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/carousel.dart';
-import 'package:levelup/drivng_details_page.dart';
-import 'package:levelup/pc_details_page.dart';
-import 'package:levelup/registration.dart';
-import 'package:levelup/squad_details_page.dart';
+import 'package:levelup/User/pc/pc_details_page.dart';
+
+import 'carousel.dart';
+import 'drivingsetup/drivng_details_page.dart';
+import 'squadroom/squad_details_page.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});

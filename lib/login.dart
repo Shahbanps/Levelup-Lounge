@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/dashboard.dart';
+
 import 'package:levelup/main.dart';
 import 'package:levelup/registration.dart';
 
