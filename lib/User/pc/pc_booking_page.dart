@@ -113,14 +113,6 @@ class _PCBookingPageState extends State<PCBookingPage> {
             SizedBox(height: 80),
             Container(
               height: 70,
-              // child: ListView.builder(
-              //     itemCount: dates.length,
-              //     scrollDirection: Axis.horizontal,
-              //     itemBuilder: (context, index) {
-              //       return Mycircle(
-              //         child: dates[index],
-              //       );
-              //     }),
               child: ListView.builder(
                 itemCount: 7,
                 scrollDirection: Axis.horizontal,
