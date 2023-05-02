@@ -16,20 +16,72 @@ class PCBookingPage extends StatefulWidget {
 }
 
 class _PCBookingPageState extends State<PCBookingPage> {
-  final List dates = [
-    'date 1',
-    'date 2',
-    'date 3',
-    'date 4',
-    'date 5',
-    'date 6',
-    'date 7',
-    'date 8',
-    'date 9',
-    'date 10',
+  final List times = [
+    '09:00 - 10:00',
+    '10:00 - 11:00',
+    '11:00 - 12:00',
+    '12:00 - 13:00',
+    '13:00 - 14:00',
+    '14:00 - 15:00',
+    '15:00 - 16:00',
+    '16:00 - 17:00',
+    '17:00 - 18:00',
+    '18:00 - 19:00',
+    '19:00 - 20:00',
+    '20:00 - 21:00',
+  ];
+  List<int> timingsSelectedIndexes = [];
+
+  List<int> seats = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  List<bool> isSelectedSlot = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
   ];
 
-  String dropdownvalue = '1';
+  int selectedTimeSLot = 0;
+
+  int _selectedIndex = -1;
+
+  int totalPrice = 0;
+
+  int noOfSeats = 0;
+
+  DateTime selectedDate = DateTime.now();
+
+  void updateSum(int index) {
+    int count = 0;
+    for (var x in seats) {
+      seats[count] = 0;
+      count += 1;
+    }
+    count = 0;
+
+    for (var x in isSelectedSlot) {
+      if (x) {
+        seats[count] += index + 1;
+      }
+      count += 1;
+    }
+    int sum = 0;
+    for (var x in seats) {
+      sum += x;
+    }
+    print(sum * 100);
+    setState(() {
+      totalPrice = sum * 100;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +113,66 @@ class _PCBookingPageState extends State<PCBookingPage> {
             SizedBox(height: 80),
             Container(
               height: 70,
+              // child: ListView.builder(
+              //     itemCount: dates.length,
+              //     scrollDirection: Axis.horizontal,
+              //     itemBuilder: (context, index) {
+              //       return Mycircle(
+              //         child: dates[index],
+              //       );
+              //     }),
               child: ListView.builder(
-                  itemCount: dates.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Mycircle(
-                      child: dates[index],
-                    );
-                  }),
+                itemCount: 7,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  // Calculate the date for this index
+                  final date = DateTime.now().add(Duration(days: index));
+
+                  // Determine whether this date is the currently selected date
+                  final isSelected = date.year == selectedDate.year &&
+                      date.month == selectedDate.month &&
+                      date.day == selectedDate.day;
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                    },
+                    child: Container(
+                      width: 70,
+                      decoration: BoxDecoration(
+                          // shape: BoxShape.rectangle,
+                          color: Color.fromARGB(255, 250, 227, 54)),
+                      child: isSelected
+                          ? Center(
+                              child: Container(
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 42, 42, 42)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 25, horizontal: 20),
+                                child: Text('${date.day}-${date.month}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                    )),
+                              ),
+                            ))
+                          : Center(
+                              child: Text('${date.day}-${date.month}',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ))),
+                    ),
+                  );
+                },
+              ),
             ),
             SizedBox(height: 5),
             Container(
@@ -99,137 +203,6 @@ class _PCBookingPageState extends State<PCBookingPage> {
             ),
             SizedBox(
               height: 5,
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 3, 8, 3),
-                    child: Text(
-                      "Seats needed ",
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 23,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 50,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      border:
-                          Border.all(color: Color.fromARGB(255, 20, 20, 20)),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: DropdownButton<String>(
-                      value: dropdownvalue,
-                      icon: const Icon(Icons.keyboard_arrow_down_sharp),
-                      style: const TextStyle(color: Colors.white),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
-                      items: [
-                        DropdownMenuItem(
-                          // ignore: sort_child_properties_last
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("1",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '1',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("2",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '2',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("3",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '3',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("4",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '4',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("5",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '5',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("6",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '6',
-                        ),
-                        DropdownMenuItem(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("7",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '7',
-                        ),
-                        DropdownMenuItem(
-                          // ignore: sort_child_properties_last
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("8",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                )),
-                          ),
-                          value: '8',
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
             ),
             Divider(
               color: Colors.white,
@@ -273,25 +246,54 @@ class _PCBookingPageState extends State<PCBookingPage> {
                                       crossAxisCount: 3,
                                       crossAxisSpacing: 15,
                                       mainAxisSpacing: 30,
-                                      childAspectRatio:
-                                          3, // set the aspect ratio of each child widget
+                                      childAspectRatio: 3,
                                     ),
                                     itemBuilder: (context, index) {
+                                      bool isSelected = timingsSelectedIndexes
+                                          .contains(index);
                                       return ElevatedButton(
                                         onPressed: () {
-                                          // action to perform when button is pressed
+                                          setState(() {
+                                            if (isSelected) {
+                                              timingsSelectedIndexes
+                                                  .remove(index);
+                                            } else {
+                                              timingsSelectedIndexes.add(index);
+                                            }
+
+                                            isSelectedSlot[index] =
+                                                !isSelectedSlot[index];
+                                            if (isSelectedSlot[index]) {
+                                              setState(() {
+                                                updateSum(noOfSeats);
+                                                print(seats);
+                                              });
+                                            } else {
+                                              setState(() {
+                                                seats[index] = 0;
+                                                print(seats);
+                                                updateSum(noOfSeats);
+                                              });
+                                            }
+                                          });
                                         },
                                         style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all<Color>(
-                                                  Colors.transparent),
+                                            isSelected
+                                                ? Colors.yellow
+                                                : Colors.transparent,
+                                          ),
                                           foregroundColor:
                                               MaterialStateProperty.all<Color>(
-                                                  Colors.white),
+                                            isSelected
+                                                ? Colors.black
+                                                : Colors.white,
+                                          ),
                                           textStyle: MaterialStateProperty.all<
                                               TextStyle>(
                                             TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 12,
                                             ),
                                           ),
                                           padding: MaterialStateProperty.all<
@@ -303,17 +305,15 @@ class _PCBookingPageState extends State<PCBookingPage> {
                                               RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                               side: BorderSide(
-                                                color: Colors
-                                                    .yellow, // set the border color here
-                                                width:
-                                                    0.5, // set the width of the border
+                                                color: Colors.yellow,
+                                                width: 0.5,
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(4),
                                             ),
                                           ),
                                         ),
-                                        child: Text('Button $index'),
+                                        child: Text(' ${times[index]}'),
                                       );
                                     },
                                     itemCount: 12,
@@ -329,7 +329,7 @@ class _PCBookingPageState extends State<PCBookingPage> {
               height: 10,
             ),
             Text(
-              "Select where you wanna sit.",
+              "How many slot do you want?",
               style: GoogleFonts.bebasNeue(
                 fontSize: 16,
                 color: Color.fromARGB(255, 255, 255, 255),
@@ -342,70 +342,95 @@ class _PCBookingPageState extends State<PCBookingPage> {
                 child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     return Container(
-                      width: constraints.maxWidth,
-                      height: 10,
-                      child: GridView.builder(
-                        // physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 6,
-                          crossAxisSpacing: 30,
-                          mainAxisSpacing: 19,
-                          childAspectRatio:
-                              1, // set the aspect ratio of each child widget
-                        ),
-                        itemBuilder: (context, index) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              // action to perform when button is pressed
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.transparent),
-                              textStyle: MaterialStateProperty.all<TextStyle>(
-                                TextStyle(
-                                  fontSize: 12,
+                        width: constraints.maxWidth,
+                        height: 10,
+                        child: GridView.builder(
+                          // physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 6,
+                            crossAxisSpacing: 30,
+                            mainAxisSpacing: 19,
+                            childAspectRatio:
+                                1, // set the aspect ratio of each child widget
+                          ),
+                          itemBuilder: (context, index) {
+                            return ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  _selectedIndex =
+                                      index; // Update the selected index
+                                  int count = 0;
+
+                                  noOfSeats = index;
+                                  updateSum(index);
+                                });
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  _selectedIndex == index
+                                      ? Colors.yellow
+                                      : Colors.transparent,
                                 ),
-                              ),
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                              ),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  side: BorderSide(
-                                    color: Colors
-                                        .yellow, // set the border color here
-                                    width: 0.5, // set the width of the border
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  _selectedIndex == index
+                                      ? Colors.black
+                                      : Colors.white,
+                                ),
+                                textStyle: MaterialStateProperty.all<TextStyle>(
+                                  TextStyle(
+                                    fontSize: 12,
                                   ),
-                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 5),
+                                ),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      color: Colors
+                                          .yellow, // set the border color here
+                                      width: 0.5, // set the width of the border
+                                    ),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: Text('$index'),
-                          );
-                        },
-                        itemCount: 12,
-                      ),
-                    );
+                              child: Text('${index + 1}'),
+                            );
+                          },
+                          itemCount: 12,
+                        ));
                   },
                 )),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Feed_Back()),
-                );
+                // Your button press logic here
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(120, 5, 120, 5),
-                child: Text(
-                  'Book Slots',
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 25,
-                    color: Color.fromARGB(255, 0, 0, 0),
-                  ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Book Slots',
+                      style: GoogleFonts.bebasNeue(
+                        fontSize: 25,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                    Text(
+                      'Total Cost: \$$totalPrice',
+                      style: GoogleFonts.bebasNeue(
+                        fontSize: 18,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               style: ButtonStyle(
