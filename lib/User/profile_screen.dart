@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,6 +22,18 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
   String socialMediaHandle = '@johndoe';
 
   String profilePictureUrl = 'assets/0.jpg';
+
+  PlatformFile? pickedFile;
+  // UploadTask? task;
+  File? file;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.first;
+
+    setState(() => pickedFile = path);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +61,25 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
               SizedBox(height: 16.0),
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 80.0,
-                    backgroundImage: NetworkImage(profilePictureUrl),
-                  ),
+                  // CircleAvatar(
+                  //   radius: 80.0,
+                  //   backgroundImage: pickedFile != null
+                  //       ?FileImage(pickedFile!.path!),
+                  //       : NetworkImage(profilePictureUrl),
+                  //   // ?NetworkImage(profilePictureUrl),
+                  // ),
+                  if (pickedFile == null)
+                    CircleAvatar(
+                      radius: 70.0,
+                      backgroundImage: NetworkImage(profilePictureUrl),
+                    ),
+                  if (pickedFile != null)
+                    CircleAvatar(
+                      radius: 70,
+                      backgroundImage: FileImage(
+                        File(pickedFile!.path!),
+                      ),
+                    ),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -61,6 +91,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                       child: IconButton(
                         onPressed: () {
                           // Add functionality to change the user's profile picture.
+                          selectFile();
                         },
                         icon: Icon(Icons.camera_alt),
                         color: Colors.black,
