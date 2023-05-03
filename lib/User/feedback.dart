@@ -150,32 +150,34 @@ class _Feed_BackState extends State<Feed_Back> {
 
   buildCheckItem(String title, int index, List<bool> buttonStates,
       Function(int) onItemSelected) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 15),
-      child: GestureDetector(
-        onTap: () {
-          // Set the selected state of this button to true
-          onItemSelected(index);
-        },
-        child: Row(
-          children: <Widget>[
-            Icon(
-              buttonStates[index]
-                  ? Icons.radio_button_checked
-                  : Icons.radio_button_unchecked,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              title,
-              style: GoogleFonts.bebasNeue(
-                fontSize: 15,
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 15),
+        child: GestureDetector(
+          onTap: () {
+            // Set the selected state of this button to true
+            onItemSelected(index);
+          },
+          child: Row(
+            children: <Widget>[
+              Icon(
+                buttonStates[index]
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                title,
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 15,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -215,7 +217,7 @@ class _Feed_BackState extends State<Feed_Back> {
           ),
         ],
       ),
-      body: Padding(
+      body: Container(
         padding: EdgeInsets.fromLTRB(16.0, 70, 16, 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
