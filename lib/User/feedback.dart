@@ -1,12 +1,193 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
-class Feed_Back extends StatelessWidget {
+class Feed_Back extends StatefulWidget {
   const Feed_Back({super.key});
+
+  @override
+  State<Feed_Back> createState() => _Feed_BackState();
+}
+
+class _Feed_BackState extends State<Feed_Back> {
+  List<bool> buttonStates = [false, false, false, false, false];
+  PlatformFile? pickedFile;
+  // UploadTask? task;
+  File? file;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.first;
+
+    setState(() => pickedFile = path);
+  }
+
+  buildFeedbackForm() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Color.fromARGB(255, 42, 42, 42),
+          borderRadius: BorderRadius.circular(10)),
+      height: 200,
+      child: Stack(
+        children: <Widget>[
+          TextField(
+            style: GoogleFonts.bebasNeue(
+              textStyle: TextStyle(
+                fontSize: 15,
+                color: Color(0xffe5e5e5),
+              ),
+            ),
+            maxLines: 10,
+            decoration: InputDecoration(
+              hintText: "Please breifly describe the issue.",
+              hintStyle: GoogleFonts.bebasNeue(
+                textStyle: TextStyle(
+                  fontSize: 15,
+                  color: Color(0xffe5e5e5),
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.yellow, // Change border color here
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border(
+                      top: BorderSide(
+                width: 1.0,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ))),
+              padding: EdgeInsets.all(8),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.yellow,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            // if (pickedFile == null)
+                            //   ClipRRect(
+                            //     borderRadius: BorderRadius.circular(20),
+                            //     child: Image(
+                            //       image: AssetImage('assets/upload_image.gif'),
+                            //     ),
+                            //   ),
+                            if (pickedFile != null)
+                              SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.file(
+                                    File(
+                                      pickedFile!.path!,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (pickedFile == null)
+                              GestureDetector(
+                                onTap: () {
+                                  selectFile();
+                                },
+                                child: Icon(
+                                  Icons.add,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                            if (pickedFile != null)
+                              GestureDetector(
+                                onTap: () {
+                                  selectFile();
+                                },
+                                child: Icon(
+                                  Icons.add,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                          ],
+                        ),
+                      )),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Upload Screenshot (optional)",
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 27,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  buildCheckItem(String title, int index, List<bool> buttonStates,
+      Function(int) onItemSelected) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 15),
+      child: GestureDetector(
+        onTap: () {
+          // Set the selected state of this button to true
+          onItemSelected(index);
+        },
+        child: Row(
+          children: <Widget>[
+            Icon(
+              buttonStates[index]
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              title,
+              style: GoogleFonts.bebasNeue(
+                fontSize: 15,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void onButtonSelected(int selectedIndex) {
+    setState(() {
+      for (int i = 0; i < buttonStates.length; i++) {
+        buttonStates[i] = i == selectedIndex;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +229,13 @@ class Feed_Back extends StatelessWidget {
               ),
             ),
             SizedBox(height: 25),
-            buildCheckItem("Login trouble"),
-            buildCheckItem("Slots booking related"),
-            buildCheckItem("Personal profile"),
-            buildCheckItem("Other issues."),
-            buildCheckItem("Suggestions"),
+            buildCheckItem("Login trouble", 0, buttonStates, onButtonSelected),
+            buildCheckItem(
+                "Slots booking related", 1, buttonStates, onButtonSelected),
+            buildCheckItem(
+                "Personal profile", 2, buttonStates, onButtonSelected),
+            buildCheckItem("Other issues.", 3, buttonStates, onButtonSelected),
+            buildCheckItem("Suggestions", 4, buttonStates, onButtonSelected),
             SizedBox(
               height: 20,
             ),
@@ -159,104 +342,4 @@ buildNuberField() {
       ),
     ),
   );
-}
-
-buildFeedbackForm() {
-  return Container(
-    decoration: BoxDecoration(
-        color: Color.fromARGB(255, 42, 42, 42),
-        borderRadius: BorderRadius.circular(10)),
-    height: 200,
-    child: Stack(
-      children: <Widget>[
-        TextField(
-          style: GoogleFonts.bebasNeue(
-            textStyle: TextStyle(
-              fontSize: 15,
-              color: Color(0xffe5e5e5),
-            ),
-          ),
-          maxLines: 10,
-          decoration: InputDecoration(
-            hintText: "Please breifly describe the issue.",
-            hintStyle: GoogleFonts.bebasNeue(
-              textStyle: TextStyle(
-                fontSize: 15,
-                color: Color(0xffe5e5e5),
-              ),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.yellow),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.yellow, // Change border color here
-              ),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(
-              width: 1.0,
-              color: Color.fromARGB(255, 0, 0, 0),
-            ))),
-            padding: EdgeInsets.all(8),
-            child: Row(
-              children: <Widget>[
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.add,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    )),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Upload Screenshot (optional)",
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 27,
-                    color: Color.fromARGB(255, 255, 255, 255),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-buildCheckItem(title) {
-  return Padding(
-      padding: EdgeInsets.only(bottom: 15),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            Icons.check_circle,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            title,
-            style: GoogleFonts.bebasNeue(
-              fontSize: 15,
-              color: Color.fromARGB(255, 255, 255, 255),
-            ),
-          ),
-        ],
-      ));
 }

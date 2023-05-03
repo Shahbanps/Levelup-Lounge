@@ -78,11 +78,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      // body: AddItem(
-      //   image_path: '',
-      //   item_name: '',
-      //   item_price: '',
-      // ),
+      // body: AddItem(),
     );
   }
 }

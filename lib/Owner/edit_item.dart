@@ -2,33 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/User/feedback.dart';
 
-class AddItem extends StatefulWidget {
-  final String item_name;
-  final String item_price;
-  final String image_path;
-
-  AddItem(
-      {required this.item_name,
-      required this.item_price,
-      required this.image_path});
+class EditItem extends StatefulWidget {
+  EditItem();
 
   @override
-  _AddItemState createState() => _AddItemState();
+  _EditItemState createState() => _EditItemState();
 }
 
-class _AddItemState extends State<AddItem> {
-  final _formKey = GlobalKey<FormState>();
-  late String _name;
-  late String _email;
-  late String _address;
-
-  @override
-  void initState() {
-    super.initState();
-    _name = widget.item_name;
-    _email = widget.item_price;
-    _address = widget.image_path;
-  }
+class _EditItemState extends State<EditItem> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +43,11 @@ class _AddItemState extends State<AddItem> {
               ),
               padding: EdgeInsets.all(16.0),
               child: Form(
-                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      initialValue: _name,
+                      controller: _nameController,
                       style: GoogleFonts.bebasNeue(
                         fontSize: 20,
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -86,12 +68,9 @@ class _AddItemState extends State<AddItem> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _name = value!;
-                      },
                     ),
                     TextFormField(
-                      initialValue: _email,
+                      controller: _priceController,
                       style: GoogleFonts.bebasNeue(
                         fontSize: 20,
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -112,46 +91,10 @@ class _AddItemState extends State<AddItem> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _email = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _address,
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'Images',
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.yellow),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your image_path';
-                        }
-                        return null;
-                      },
-                      //somethingwrong
-                      onSaved: (value) {
-                        _address = value!;
-                      },
                     ),
                     SizedBox(height: 16.0),
                     ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          // Add code here to update the user's profile information.
-                          Navigator.pop(context);
-                        }
-                      },
+                      onPressed: () {},
                       child: Text(
                         'Remove Item',
                         style: GoogleFonts.bebasNeue(
@@ -173,11 +116,8 @@ class _AddItemState extends State<AddItem> {
                     SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          // Add code here to update the user's profile information.
-                          Navigator.pop(context);
-                        }
+                        print(_nameController.text);
+                        print(_priceController.text);
                       },
                       child: Text(
                         'Save Changes',
