@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../booking_details.dart';
 import 'change_password.dart';
 import 'edit_profile.dart';
 
@@ -212,17 +213,18 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Social Media Links',
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      )),
-                  SizedBox(height: 3.0),
-                  Text(socialMediaHandle,
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 15,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      )),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => BookingDetails(),
+                      ));
+                    },
+                    child: Text('Booking Details',
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
                 ],
               ),
             ),

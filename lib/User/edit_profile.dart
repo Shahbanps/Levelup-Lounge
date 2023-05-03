@@ -15,16 +15,24 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  late String _name;
-  late String _email;
-  late String _address;
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _addressController;
 
   @override
   void initState() {
     super.initState();
-    _name = widget.name;
-    _email = widget.email;
-    _address = widget.address;
+    _nameController = TextEditingController(text: widget.name);
+    _emailController = TextEditingController(text: widget.email);
+    _addressController = TextEditingController(text: widget.address);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,7 +70,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      initialValue: _name,
+                      controller: _nameController,
                       style: GoogleFonts.bebasNeue(
                         fontSize: 20,
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -83,12 +91,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _name = value!;
-                      },
                     ),
                     TextFormField(
-                      initialValue: _email,
+                      controller: _emailController,
                       style: GoogleFonts.bebasNeue(
                         fontSize: 20,
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -109,12 +114,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _email = value!;
-                      },
                     ),
                     TextFormField(
-                      initialValue: _address,
+                      controller: _addressController,
                       style: GoogleFonts.bebasNeue(
                         fontSize: 20,
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -135,33 +137,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _address = value!;
-                      },
                     ),
-                    SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          // Add code here to update the user's profile information.
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: Text(
-                        'Save',
-                        style: GoogleFonts.bebasNeue(
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 0, 0, 0),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+// TODO: implement form submission
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.yellow,
+                          onPrimary: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          minimumSize: Size(
+                            MediaQuery.of(context).size.width / 1.5,
+                            50,
+                          ),
                         ),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.yellow),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
+                        child: Text(
+                          'Save Changes',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

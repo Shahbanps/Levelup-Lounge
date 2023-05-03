@@ -18,6 +18,9 @@ class Feed_Back extends StatefulWidget {
 }
 
 class _Feed_BackState extends State<Feed_Back> {
+  TextEditingController _phoneNumberController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
   List<bool> buttonStates = [false, false, false, false, false];
   PlatformFile? pickedFile;
   // UploadTask? task;
@@ -40,6 +43,7 @@ class _Feed_BackState extends State<Feed_Back> {
       child: Stack(
         children: <Widget>[
           TextField(
+            controller: _descriptionController, // add controller
             style: GoogleFonts.bebasNeue(
               textStyle: TextStyle(
                 fontSize: 15,
@@ -245,7 +249,7 @@ class _Feed_BackState extends State<Feed_Back> {
             SizedBox(
               height: 20,
             ),
-            buildNuberField(),
+            buildNuberField(_phoneNumberController),
             Spacer(),
             ElevatedButton(
               onPressed: () {
@@ -281,12 +285,13 @@ class _Feed_BackState extends State<Feed_Back> {
   }
 }
 
-buildNuberField() {
+buildNuberField(TextEditingController controller) {
   return Container(
     decoration: BoxDecoration(
         color: Color.fromARGB(255, 42, 42, 42),
         borderRadius: BorderRadius.circular(10)),
     child: TextField(
+      controller: controller, // added controller
       style: GoogleFonts.bebasNeue(
         textStyle: TextStyle(
           fontSize: 20,

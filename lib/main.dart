@@ -13,6 +13,7 @@ import 'User/dashboard.dart';
 import 'User/feedback.dart';
 import 'User/profile_screen.dart';
 import 'User/store_dashboard.dart';
+import 'booking_details.dart';
 
 void main() {
   runApp(MyApp());
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      // body: AddItem(),
+      // body: BookingDetails(),
     );
   }
 }

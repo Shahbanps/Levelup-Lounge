@@ -8,9 +8,9 @@ class ChangePasswordScreen extends StatefulWidget {
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _currentPassword = '';
-  String _newPassword = '';
-  String _confirmNewPassword = '';
+  TextEditingController _currentPasswordController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _confirmNewPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               children: [
                 SizedBox(height: 16.0),
                 TextFormField(
+                  controller: _currentPasswordController,
                   obscureText: true,
                   style: GoogleFonts.bebasNeue(
                     fontSize: 20,
@@ -69,6 +70,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
+                  controller: _newPasswordController,
                   obscureText: true,
                   style: GoogleFonts.bebasNeue(
                     fontSize: 20,
@@ -97,6 +99,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
+                  controller: _confirmNewPasswordController,
                   obscureText: true,
                   style: GoogleFonts.bebasNeue(
                     fontSize: 20,
