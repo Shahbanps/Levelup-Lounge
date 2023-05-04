@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../booking_details.dart';
+import 'booking_details.dart';
 import 'change_password.dart';
 import 'edit_profile.dart';
 
@@ -61,13 +61,6 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
             SizedBox(height: 16.0),
             Stack(
               children: [
-                // CircleAvatar(
-                //   radius: 80.0,
-                //   backgroundImage: pickedFile != null
-                //       ?FileImage(pickedFile!.path!),
-                //       : NetworkImage(profilePictureUrl),
-                //   // ?NetworkImage(profilePictureUrl),
-                // ),
                 if (pickedFile == null)
                   CircleAvatar(
                     radius: 70.0,

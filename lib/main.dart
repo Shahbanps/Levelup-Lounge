@@ -12,8 +12,9 @@ import 'Owner/edit_item.dart';
 import 'User/dashboard.dart';
 import 'User/feedback.dart';
 import 'User/profile_screen.dart';
+import 'Owner/purchase_details.dart';
 import 'User/store_dashboard.dart';
-import 'booking_details.dart';
+import 'User/booking_details.dart';
 
 void main() {
   runApp(MyApp());
@@ -51,36 +52,36 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Pages[currentIndex],
-      bottomNavigationBar: Container(
-        color: Colors.black,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          child: GNav(
-            onTabChange: (i) {
-              setState(() {
-                currentIndex = i;
-              });
-            },
-            backgroundColor: Colors.black,
-            color: Color.fromARGB(255, 255, 255, 255),
-            activeColor: Color.fromARGB(255, 255, 255, 255),
-            tabBackgroundColor: Color.fromARGB(255, 31, 31, 31),
-            padding: EdgeInsets.all(16),
-            gap: 8,
-            tabs: const [
-              GButton(
-                icon: Icons.home_filled,
-                text: 'Home',
-              ),
-              GButton(icon: Icons.store_rounded, text: 'Store'),
-              GButton(icon: Icons.feedback_rounded, text: 'Feedback'),
-              GButton(icon: Icons.person_2_rounded, text: 'Profile'),
-            ],
-          ),
-        ),
-      ),
-      // body: BookingDetails(),
+      // body: Pages[currentIndex],
+      // bottomNavigationBar: Container(
+      //   color: Colors.black,
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      //     child: GNav(
+      //       onTabChange: (i) {
+      //         setState(() {
+      //           currentIndex = i;
+      //         });
+      //       },
+      //       backgroundColor: Colors.black,
+      //       color: Color.fromARGB(255, 255, 255, 255),
+      //       activeColor: Color.fromARGB(255, 255, 255, 255),
+      //       tabBackgroundColor: Color.fromARGB(255, 31, 31, 31),
+      //       padding: EdgeInsets.all(16),
+      //       gap: 8,
+      //       tabs: const [
+      //         GButton(
+      //           icon: Icons.home_filled,
+      //           text: 'Home',
+      //         ),
+      //         GButton(icon: Icons.store_rounded, text: 'Store'),
+      //         GButton(icon: Icons.feedback_rounded, text: 'Feedback'),
+      //         GButton(icon: Icons.person_2_rounded, text: 'Profile'),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      body: PurchseDetails(),
     );
   }
 }
