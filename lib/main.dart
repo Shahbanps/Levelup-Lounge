@@ -9,10 +9,13 @@ import 'package:levelup/registration.dart';
 
 import 'Owner/admin_store_dashboard.dart';
 import 'Owner/edit_item.dart';
+import 'Owner/pc/view_pc_bookings.dart';
+
+import 'User/admin_pc_booking.dart';
 import 'User/dashboard.dart';
 import 'User/feedback.dart';
 import 'User/profile_screen.dart';
-import 'Owner/purchase_details.dart';
+import 'User/purchase_details.dart';
 import 'User/store_dashboard.dart';
 import 'User/booking_details.dart';
 
@@ -81,7 +84,7 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //   ),
       // ),
-      body: PurchseDetails(),
+      body: AdminStorePage(),
     );
   }
 }

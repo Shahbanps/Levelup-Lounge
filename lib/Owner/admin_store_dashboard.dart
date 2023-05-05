@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/User/feedback.dart';
 
 import '../User/change_password.dart';
+import 'add_item_store.dart';
+import 'edit_item.dart';
 
 class AdminStorePage extends StatefulWidget {
   @override
@@ -135,6 +137,76 @@ class _AdminStorePageState extends State<AdminStorePage> {
             ),
             Expanded(
               flex: 5,
+              // child: GridView.builder(
+              //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2,
+              //     childAspectRatio: 1.0,
+              //   ),
+              //   itemCount: _products.length,
+              //   itemBuilder: (BuildContext context, int index) {
+              //     Product product = _products[index];
+              //     return Padding(
+              //       padding: const EdgeInsets.all(5.0),
+              //       child: Card(
+              //         color: Colors.black,
+              //         shape: RoundedRectangleBorder(
+              //           side: BorderSide(
+              //             color: Color.fromARGB(
+              //                 255, 26, 26, 26), // set the border color here
+              //             width: 0.5, // set the width of the border
+              //           ),
+              //           borderRadius: BorderRadius.circular(10.0),
+              //         ),
+              //         elevation: 4.0,
+              //         // child: InkWell(
+              //         //   onTap: () => () {
+              //         //     Navigator.push(
+              //         //       context,
+              //         //       MaterialPageRoute(builder: (context) => EditItem()),
+              //         //     );
+              //         //   },
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           children: [
+              //             Container(
+              //               decoration: BoxDecoration(
+              //                 borderRadius: BorderRadius.circular(10.0),
+              //                 color: Colors.black,
+              //               ),
+              //               padding: EdgeInsets.all(10.0),
+              //               child: product.imagePath != null
+              //                   ? Image.asset(
+              //                       product.imagePath!,
+              //                       height: 100.0,
+              //                       width: 100.0,
+              //                     )
+              //                   : Icon(
+              //                       Icons.image,
+              //                       size: 50.0,
+              //                     ),
+              //             ),
+              //             SizedBox(height: 8),
+              //             Text(
+              //               product.name,
+              //               style: GoogleFonts.bebasNeue(
+              //                 fontSize: 20,
+              //                 color: Color.fromARGB(255, 255, 255, 255),
+              //               ),
+              //             ),
+              //             SizedBox(height: 3),
+              //             Text(
+              //               '\$${product.price.toStringAsFixed(2)}',
+              //               style: GoogleFonts.bebasNeue(
+              //                 fontSize: 18,
+              //                 color: Color.fromARGB(255, 226, 200, 0),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -150,24 +222,29 @@ class _AdminStorePageState extends State<AdminStorePage> {
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                           color: Color.fromARGB(
-                              255, 26, 26, 26), // set the border color here
+                            255,
+                            26,
+                            26,
+                            26,
+                          ), // set the border color here
                           width: 0.5, // set the width of the border
                         ),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       elevation: 4.0,
-                      child: InkWell(
-                        onTap: () => () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChangePasswordScreen()),
-                          );
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditItem(),
+                                ),
+                              );
+                            },
+                            child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 color: Colors.black,
@@ -184,24 +261,34 @@ class _AdminStorePageState extends State<AdminStorePage> {
                                       size: 50.0,
                                     ),
                             ),
-                            SizedBox(height: 8),
-                            Text(
+                          ),
+                          SizedBox(height: 8),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditItem(),
+                                ),
+                              );
+                            },
+                            child: Text(
                               product.name,
                               style: GoogleFonts.bebasNeue(
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 255, 255, 255),
                               ),
                             ),
-                            SizedBox(height: 3),
-                            Text(
-                              '\$${product.price.toStringAsFixed(2)}',
-                              style: GoogleFonts.bebasNeue(
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 226, 200, 0),
-                              ),
+                          ),
+                          SizedBox(height: 3),
+                          Text(
+                            '\$${product.price.toStringAsFixed(2)}',
+                            style: GoogleFonts.bebasNeue(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 226, 200, 0),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -258,7 +345,7 @@ class _AdminStorePageState extends State<AdminStorePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Feed_Back()),
+                        MaterialPageRoute(builder: (context) => AddItem()),
                       );
                     },
                     child: Padding(
