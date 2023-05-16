@@ -1,14 +1,90 @@
 // ignore_for_file: implementation_imports, prefer_const_constructors, sized_box_for_whitespace
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:levelup/User/dashboard.dart';
 
 import 'login.dart';
+import 'user_nav_bar.dart';
 
-class RegistrationPage extends StatelessWidget {
-  const RegistrationPage({super.key});
+class RegistrationPage extends StatefulWidget {
+  // final VoidCallback showLoginPage;
+  RegistrationPage({
+    super.key,
+  });
+
+  @override
+  State<RegistrationPage> createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
+  final _phoneNumberController = TextEditingController();
+
+  final _firstNameController = TextEditingController();
+
+  final _lastNameController = TextEditingController();
+
+  final _emailController = TextEditingController();
+
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> signUp() async {
+    try {
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim());
+
+      // Save user details to Firestore or any other database
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'phoneNumber': _phoneNumberController.text.trim(),
+        'firstName': _firstNameController.text.trim(),
+        'lastName': _lastNameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'type': "user",
+      });
+
+      // Navigate to the home screen or any other desired screen
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } catch (e) {
+      print(e);
+      // Show error message to user
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text(e.toString()),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +136,7 @@ class RegistrationPage extends StatelessWidget {
                       width: 270,
                       height: 50,
                       child: TextField(
+                        controller: _phoneNumberController,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -95,6 +172,7 @@ class RegistrationPage extends StatelessWidget {
                       width: 150,
                       height: 50,
                       child: TextField(
+                        controller: _firstNameController,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "firstname",
@@ -116,6 +194,7 @@ class RegistrationPage extends StatelessWidget {
                       width: 110,
                       height: 50,
                       child: TextField(
+                        controller: _lastNameController,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "lastname",
@@ -155,6 +234,7 @@ class RegistrationPage extends StatelessWidget {
                       width: 270,
                       height: 50,
                       child: TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -189,6 +269,7 @@ class RegistrationPage extends StatelessWidget {
                       width: 270,
                       height: 50,
                       child: TextField(
+                        controller: _passwordController,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -212,10 +293,18 @@ class RegistrationPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    Text(
-                      "Register",
-                      style: TextStyle(fontSize: 17, color: Colors.white),
-                    ),
+                    GestureDetector(
+                      onTap: signUp,
+                      child: Center(
+                        child: Text(
+                          'Register',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 25,
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -236,9 +325,8 @@ class RegistrationPage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ));
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (builder) => LoginPage()));
                     },
                     child: Text(
                       " Signin now",

@@ -5,14 +5,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:levelup/Owner/pc/view_pc_bookings.dart';
 import 'package:levelup/User/pc/pc_details_page.dart';
 
-import 'carousel.dart';
-import 'drivingsetup/drivng_details_page.dart';
-import 'squadroom/squad_details_page.dart';
+import '../User/carousel.dart';
+import 'driving setup/view_driving_bookings.dart';
+import 'squad room/view_squad_bookings.dart';
 
-class Dashboard extends StatelessWidget {
-  const Dashboard({super.key});
+class AdminDashboard extends StatelessWidget {
+  const AdminDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +122,7 @@ class Dashboard extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Details(),
+                          builder: (context) => ViewPCBookingPage(),
                         ));
                       },
                     ),
@@ -145,7 +146,7 @@ class Dashboard extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SquadDetails(),
+                          builder: (context) => ViewSquadBookingPage(),
                         ));
                       },
                     ),
@@ -169,7 +170,7 @@ class Dashboard extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => DrivingDetails(),
+                          builder: (context) => ViewDrivingBookingPage(),
                         ));
                       },
                     ),

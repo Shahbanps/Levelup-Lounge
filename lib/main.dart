@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:levelup/Owner/add_item_store.dart';
-import 'package:levelup/login.dart';
-import 'package:levelup/registration.dart';
+import 'package:levelup/pages/login.dart';
+import 'package:levelup/pages/registration.dart';
 
 import 'Owner/admin_store_dashboard.dart';
 import 'Owner/edit_item.dart';
@@ -18,8 +19,11 @@ import 'User/profile_screen.dart';
 import 'User/purchase_details.dart';
 import 'User/store_dashboard.dart';
 import 'User/booking_details.dart';
+import 'auth/main_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -48,43 +52,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
-
-  List<String> texts = ['0', '1', '2', '3'];
-  var Pages = [Dashboard(), StorePage(), Feed_Back(), ProfileDashboard()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Pages[currentIndex],
-      // bottomNavigationBar: Container(
-      //   color: Colors.black,
-      //   child: Padding(
-      //     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      //     child: GNav(
-      //       onTabChange: (i) {
-      //         setState(() {
-      //           currentIndex = i;
-      //         });
-      //       },
-      //       backgroundColor: Colors.black,
-      //       color: Color.fromARGB(255, 255, 255, 255),
-      //       activeColor: Color.fromARGB(255, 255, 255, 255),
-      //       tabBackgroundColor: Color.fromARGB(255, 31, 31, 31),
-      //       padding: EdgeInsets.all(16),
-      //       gap: 8,
-      //       tabs: const [
-      //         GButton(
-      //           icon: Icons.home_filled,
-      //           text: 'Home',
-      //         ),
-      //         GButton(icon: Icons.store_rounded, text: 'Store'),
-      //         GButton(icon: Icons.feedback_rounded, text: 'Feedback'),
-      //         GButton(icon: Icons.person_2_rounded, text: 'Profile'),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      body: AdminStorePage(),
+      body: MainPage(),
     );
   }
 }

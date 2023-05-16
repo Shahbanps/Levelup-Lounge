@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Components/Slots.dart';
 import '../circles.dart';
 import '../feedback.dart';
 
@@ -58,6 +60,26 @@ class _PCBookingPageState extends State<PCBookingPage> {
   int noOfSeats = 0;
 
   DateTime selectedDate = DateTime.now();
+  List<String> reservedTimes = [];
+
+  Future _addBook(Slot slot) async {
+    // final docBook = FirebaseFirestore.instance.collection('books').doc();
+
+    // final json = slot.toJson();
+    // print(json);
+    // await docBook.set(json);
+
+    final CollectionReference booksCollection =
+        FirebaseFirestore.instance.collection('Slots');
+    final DocumentReference docBook = booksCollection.doc();
+
+    final String docId = docBook.id; // Get the generated document ID
+    final Map<String, dynamic> jsonData = slot.toJson();
+    jsonData['id'] = docId; // Add the ID to the data map
+
+    print(jsonData);
+    await docBook.set(jsonData);
+  }
 
   void updateSum(int index) {
     int count = 0;
@@ -404,26 +426,46 @@ class _PCBookingPageState extends State<PCBookingPage> {
               onPressed: () {
                 // Your button press logic here
               },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(120, 5, 120, 5),
-                child: Column(
-                  children: [
-                    Text(
-                      'Book Slots',
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 25,
-                        color: Color.fromARGB(255, 0, 0, 0),
+              child: GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(120, 5, 120, 5),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Book Slots',
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 25,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Total Cost: \$$totalPrice',
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 18,
-                        color: Color.fromARGB(255, 0, 0, 0),
+                      Text(
+                        'Total Cost: \$$totalPrice',
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                onTap: () {
+                  reservedTimes.clear();
+
+                  for (int i = 0; i < seats.length; i++) {
+                    if (seats[i] != 0) {
+                      reservedTimes.add(times[i]);
+                    }
+                  }
+                  print(reservedTimes);
+                  final slot = Slot(
+                      no_of_slots: reservedTimes.length,
+                      no_of_pc: noOfSeats + 1,
+                      price: totalPrice,
+                      date: selectedDate,
+                      type: "PC",
+                      time: reservedTimes);
+                  _addBook(slot);
+                },
               ),
               style: ButtonStyle(
                 backgroundColor:
