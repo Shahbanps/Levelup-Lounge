@@ -24,6 +24,7 @@ class _MainPageState extends State<MainPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
+          // Inside the builder method of the StreamBuilder
           if (snapshot.hasData) {
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
@@ -37,7 +38,6 @@ class _MainPageState extends State<MainPage> {
                 if (userSnapshot.hasData) {
                   final userData = userSnapshot.data!.data();
                   if (userData is Map<String, dynamic>) {
-                    // Add null check before type cast
                     final userType = userData['type'] as String?;
                     if (userType == 'owner') {
                       return AdminNavbar();
@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
                     }
                   }
                 }
-                return LoginPage(); // Handle the case when user data is null or not of the expected type
+                return LoginPage();
               },
             );
           } else {

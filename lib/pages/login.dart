@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/main.dart';
 import 'package:levelup/pages/user_nav_bar.dart';
 import 'package:levelup/pages/registration.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatefulWidget {
   // final VoidCallback showRegisterPage;
@@ -132,9 +134,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => UserNavBar(),
-                            ));
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (context) => UserNavBar(),
+                            // ));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
