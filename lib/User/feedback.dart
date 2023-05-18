@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -22,6 +23,13 @@ class _Feed_BackState extends State<Feed_Back> {
   TextEditingController _descriptionController = TextEditingController();
 
   List<bool> buttonStates = [false, false, false, false, false];
+  List<String> feedbackTypes = [
+    "Login trouble",
+    "Slots booking related",
+    "Personal profile",
+    "Other issues",
+    "Suggestions",
+  ];
   PlatformFile? pickedFile;
   // UploadTask? task;
   File? file;
@@ -253,10 +261,40 @@ class _Feed_BackState extends State<Feed_Back> {
             Spacer(),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Feed_Back()),
-                );
+                // Get the current date and time
+                DateTime now = DateTime.now();
+
+                // Prepare the feedback data to be stored in Firestore
+                Map<String, dynamic> feedbackData = {
+                  'feedback_type': feedbackTypes[buttonStates.indexOf(true)],
+                  'description': _descriptionController.text,
+                  'screenshot_url':
+                      pickedFile != null ? pickedFile!.path! : null,
+                  'phone_number': _phoneNumberController.text,
+                  'date': now,
+                };
+
+                // Store the feedback data in Firestore
+                FirebaseFirestore.instance
+                    .collection('feedback')
+                    .add(feedbackData)
+                    .then((value) {
+                  // Feedback stored successfully
+                  print('Feedback stored in Firestore');
+                  // TODO: Show a success message to the user
+
+                  // Clear the text controllers and reset the variables
+                  _phoneNumberController.clear();
+                  _descriptionController.clear();
+                  pickedFile = null;
+                  setState(() {
+                    buttonStates = List<bool>.filled(5, false);
+                  });
+                }).catchError((error) {
+                  // Error occurred while storing feedback
+                  print('Error storing feedback: $error');
+                  // TODO: Show an error message to the user
+                });
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(120, 5, 160, 5),

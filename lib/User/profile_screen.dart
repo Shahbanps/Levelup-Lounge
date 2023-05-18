@@ -1,43 +1,3 @@
-// import 'dart:io';
-
-// import 'package:file_picker/file_picker.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-
-// import 'booking_details.dart';
-// import 'change_password.dart';
-// import 'edit_profile.dart';
-
-// class ProfileDashboard extends StatefulWidget {
-//   const ProfileDashboard({Key? key}) : super(key: key);
-
-//   @override
-//   _ProfileDashboardState createState() => _ProfileDashboardState();
-// }
-
-// class _ProfileDashboardState extends State<ProfileDashboard> {
-//   String name = 'John Doe';
-//   String email = 'johndoe@gmail.com';
-//   String address = '123 Main Street';
-//   String paymentInfo = '**** **** **** 1234';
-//   String socialMediaHandle = '@johndoe';
-
-//   String profilePictureUrl = 'assets/0.jpg';
-
-//   PlatformFile? pickedFile;
-//   // UploadTask? task;
-//   File? file;
-//   Future selectFile() async {
-//     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
-
-//     if (result == null) return;
-//     final path = result.files.first;
-
-//     setState(() => pickedFile = path);
-//   }
-
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -201,10 +161,11 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => EditProfilePage(
-                              name:
-                                  '${(snapshot.data!.data() as Map<String, dynamic>)['firstName']} ${(snapshot.data!.data() as Map<String, dynamic>)['lastName']}',
+                              firstName: (snapshot.data!.data()
+                                  as Map<String, dynamic>)['firstName'],
+                              lastName: (snapshot.data!.data()
+                                  as Map<String, dynamic>)['lastName'],
                               email: email,
-                              address: '',
                             ),
                           ),
                         );
