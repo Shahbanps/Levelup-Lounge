@@ -4,6 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/User/feedback.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storage;
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+
+import 'admin_store_dashboard.dart';
 
 class AddItem extends StatefulWidget {
   AddItem();
@@ -18,13 +22,34 @@ class _AddItemState extends State<AddItem> {
   PlatformFile? pickedFile;
   // UploadTask? task;
   File? file;
+  late PlatformFile path;
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) return;
-    final path = result.files.first;
+    path = result.files.first;
 
     setState(() => pickedFile = path);
+  }
+
+  Future<void> upLoad() async {
+    if (pickedFile != null) {
+      // Upload the file to Firebase Storage
+      storage.Reference storageRef =
+          storage.FirebaseStorage.instance.ref().child('items/${path.name!}');
+      storage.UploadTask uploadTask =
+          storageRef.putFile(File(pickedFile!.path!));
+      storage.TaskSnapshot taskSnapshot =
+          await uploadTask.whenComplete(() => null);
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+      // Create a new document in Firestore and store the download URL
+      firestore.FirebaseFirestore.instance.collection('items').add({
+        'image_url': downloadUrl,
+        'item_name': _nameController.text,
+        'item_price': _priceController.text,
+      });
+    }
   }
 
   @override
@@ -34,7 +59,7 @@ class _AddItemState extends State<AddItem> {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          'Edit Profile',
+          'Add Item',
           style: GoogleFonts.bebasNeue(
             fontSize: 30,
             color: Colors.white,
@@ -172,8 +197,8 @@ class _AddItemState extends State<AddItem> {
 
                       ElevatedButton(
                         onPressed: () {
-                          print(_nameController.text);
-                          print(_priceController.text);
+                          upLoad();
+                          Navigator.pop(context);
                         },
                         child: Text(
                           'Save Changes',
