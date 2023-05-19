@@ -23,6 +23,7 @@
 //   late TextEditingController _firstNameController;
 //   late TextEditingController _lastNameController;
 //   late TextEditingController _emailController;
+//   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 //   @override
 //   void initState() {
@@ -38,6 +39,18 @@
 //     _lastNameController.dispose();
 //     _emailController.dispose();
 //     super.dispose();
+//   }
+
+//   Future<void> _updateEmail(String newEmail) async {
+//     User? user = _auth.currentUser;
+//     if (user != null) {
+//       try {
+//         await user.updateEmail(newEmail);
+//       } catch (error) {
+//         // Handle the error here, such as showing an error message
+//         print('Error updating email: $error');
+//       }
+//     }
 //   }
 
 //   @override
@@ -164,9 +177,15 @@
 //                               'lastName': newLastName,
 //                               'email': newEmail,
 //                             }).then((value) {
-//                               Navigator.pop(context);
-//                               // Update successful
-//                               // You can perform any additional actions here, such as showing a success message
+//                               // Update email in Firebase Authentication
+//                               _updateEmail(newEmail).then((_) {
+//                                 Navigator.pop(context);
+//                                 // Update successful
+//                                 // You can perform any additional actions here, such as showing a success message
+//                               }).catchError((error) {
+//                                 // Error occurred while updating email
+//                                 // Handle the error here, such as showing an error message
+//                               });
 //                             }).catchError((error) {
 //                               // Error occurred while updating
 //                               // Handle the error here, such as showing an error message
@@ -203,7 +222,6 @@
 //     );
 //   }
 // }
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

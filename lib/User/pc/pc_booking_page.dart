@@ -1,14 +1,6 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../Components/Slots.dart';
-import '../circles.dart';
-import '../feedback.dart';
 
 class PCBookingPage extends StatefulWidget {
   PCBookingPage({super.key});
@@ -18,13 +10,6 @@ class PCBookingPage extends StatefulWidget {
 }
 
 class _PCBookingPageState extends State<PCBookingPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchData();
-  }
-
   final List times = [
     '09:00 - 10:00',
     '10:00 - 11:00',
@@ -69,63 +54,6 @@ class _PCBookingPageState extends State<PCBookingPage> {
 
   DateTime selectedDate = DateTime.now();
   List<String> reservedTimes = [];
-
-  Future _addBook(Slot slot) async {
-    // final docBook = FirebaseFirestore.instance.collection('books').doc();
-
-    // final json = slot.toJson();
-    // print(json);
-    // await docBook.set(json);
-
-    final CollectionReference booksCollection =
-        FirebaseFirestore.instance.collection('Slots');
-    final DocumentReference docBook = booksCollection.doc();
-
-    final String docId = docBook.id; // Get the generated document ID
-    final Map<String, dynamic> jsonData = slot.toJson();
-    jsonData['id'] = docId; // Add the ID to the data map
-
-    print(jsonData);
-    await docBook.set(jsonData);
-  }
-
-  //retrieving data from firebase
-  Future<void> fetchData() async {
-    timingsSelectedIndexesBackend.clear();
-    try {
-      CollectionReference booksRef =
-          FirebaseFirestore.instance.collection('Slots');
-      QuerySnapshot querySnapshot = await booksRef.get();
-      print(querySnapshot);
-      int no_of_pc = 0;
-      // Iterate over the documents in the collection
-      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
-
-        // Retrieve the 'time' field as a List<String> (with null check)
-        List<String> timeList = (data['time'] != null)
-            ? List<String>.from(data['time'] as List<dynamic>)
-            : [];
-        no_of_pc = data["no_of_pc"];
-        // Process the timeList as needed
-        print(timeList);
-        print("No of Pc ${no_of_pc}");
-
-        for (String time in timeList) {
-          int index = times.indexOf(time);
-          if (index != -1) {
-            timingsSelectedIndexesBackend.add(index);
-          }
-        }
-      }
-      print("hi ${timingsSelectedIndexesBackend}");
-      seatCount = 12 - no_of_pc;
-    } catch (e) {
-      // Handle any errors that occur during the fetch
-      print('Error fetching data: $e');
-    }
-  }
 
   void updateSum(int index) {
     int count = 0;
@@ -176,372 +104,392 @@ class _PCBookingPageState extends State<PCBookingPage> {
           ),
         ),
         backgroundColor: Colors.black,
-        body: FutureBuilder(
-            future: fetchData(),
-            builder: (context, snapshot) {
-              return Column(
-                children: [
-                  SizedBox(height: 80),
-                  Container(
-                    height: 70,
-                    child: ListView.builder(
-                      itemCount: 7,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        // Calculate the date for this index
-                        final date = DateTime.now().add(Duration(days: index));
+        body: FutureBuilder(builder: (context, snapshot) {
+          return Column(
+            children: [
+              SizedBox(height: 80),
+              Container(
+                height: 70,
+                child: ListView.builder(
+                  itemCount: 7,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    // Calculate the date for this index
+                    final date = DateTime.now().add(Duration(days: index));
 
-                        // Determine whether this date is the currently selected date
-                        final isSelected = date.year == selectedDate.year &&
-                            date.month == selectedDate.month &&
-                            date.day == selectedDate.day;
+                    // Determine whether this date is the currently selected date
+                    final isSelected = date.year == selectedDate.year &&
+                        date.month == selectedDate.month &&
+                        date.day == selectedDate.day;
 
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedDate = date;
-                            });
-                          },
-                          child: Container(
-                            width: 70,
-                            decoration: BoxDecoration(
-                                // shape: BoxShape.rectangle,
-                                color: Color.fromARGB(255, 250, 227, 54)),
-                            child: isSelected
-                                ? Center(
-                                    child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 42, 42, 42)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 25, horizontal: 20),
-                                      child: Text('${date.day}-${date.month}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : Colors.black,
-                                          )),
-                                    ),
-                                  ))
-                                : Center(
-                                    child: Text('${date.day}-${date.month}',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ))),
-                          ),
-                        );
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedDate = date;
+                        });
                       },
+                      child: Container(
+                        width: 70,
+                        decoration: BoxDecoration(
+                            // shape: BoxShape.rectangle,
+                            color: Color.fromARGB(255, 250, 227, 54)),
+                        child: isSelected
+                            ? Center(
+                                child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 42, 42, 42)),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 25, horizontal: 20),
+                                  child: Text('${date.day}-${date.month}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.black,
+                                      )),
+                                ),
+                              ))
+                            : Center(
+                                child: Text('${date.day}-${date.month}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ))),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromARGB(255, 143, 143, 143), //New
+                        blurRadius: 0.2,
+                        offset: Offset(0, 0.2))
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 3, 8, 3),
+                      child: Text(
+                        "Individual  .  PC's  .  100₹  .  per slot / per person",
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Divider(
+                color: Colors.white,
+                height: 0,
+                thickness: 0.3,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 5, 15, 5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 28, 28, 28),
+                    border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  SizedBox(height: 5),
-                  Container(
-                    decoration: BoxDecoration(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color.fromARGB(255, 143, 143, 143), //New
-                            blurRadius: 0.2,
-                            offset: Offset(0, 0.2))
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8.0, 3, 8, 3),
-                          child: Text(
-                            "Individual  .  PC's  .  100₹  .  per slot / per person",
+                  width: 500,
+                  height: 350,
+                  child: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Available slot timings",
                             style: GoogleFonts.bebasNeue(
-                              fontSize: 15,
-                              color: Colors.white,
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Divider(
-                    color: Colors.white,
-                    height: 0,
-                    thickness: 0.3,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 5, 15, 5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 28, 28, 28),
-                        border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      width: 500,
-                      height: 350,
-                      child: Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Available slot timings",
-                                style: GoogleFonts.bebasNeue(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                ),
-                              ),
-                              Container(
-                                  height: 300,
-                                  child: LayoutBuilder(
-                                    builder: (BuildContext context,
-                                        BoxConstraints constraints) {
-                                      return Container(
-                                        width: constraints.maxWidth,
-                                        height: 10,
-                                        child: GridView.builder(
-                                          padding: EdgeInsets.only(top: 20),
-                                          // physics: NeverScrollableScrollPhysics(),
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            crossAxisSpacing: 15,
-                                            mainAxisSpacing: 30,
-                                            childAspectRatio: 3,
-                                          ),
-                                          itemBuilder: (context, index) {
-                                            bool isSelected =
+                          Container(
+                              height: 300,
+                              child: LayoutBuilder(
+                                builder: (BuildContext context,
+                                    BoxConstraints constraints) {
+                                  return Container(
+                                    width: constraints.maxWidth,
+                                    height: 10,
+                                    child: GridView.builder(
+                                      padding: EdgeInsets.only(top: 20),
+                                      // physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 15,
+                                        mainAxisSpacing: 30,
+                                        childAspectRatio: 3,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        bool isSelected = timingsSelectedIndexes
+                                            .contains(index);
+                                        bool isSelect =
+                                            timingsSelectedIndexesBackend
+                                                .contains(index);
+                                        return ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              if (isSelected) {
                                                 timingsSelectedIndexes
-                                                    .contains(index);
-                                            bool isSelect =
-                                                timingsSelectedIndexesBackend
-                                                    .contains(index);
-                                            return ElevatedButton(
-                                              onPressed: () {
+                                                    .remove(index);
+                                              } else {
+                                                timingsSelectedIndexes
+                                                    .add(index);
+                                              }
+
+                                              isSelectedSlot[index] =
+                                                  !isSelectedSlot[index];
+                                              if (isSelectedSlot[index]) {
                                                 setState(() {
-                                                  if (isSelected) {
-                                                    timingsSelectedIndexes
-                                                        .remove(index);
-                                                  } else {
-                                                    timingsSelectedIndexes
-                                                        .add(index);
-                                                  }
-
-                                                  isSelectedSlot[index] =
-                                                      !isSelectedSlot[index];
-                                                  if (isSelectedSlot[index]) {
-                                                    setState(() {
-                                                      updateSum(noOfSeats);
-                                                      print(seats);
-                                                    });
-                                                  } else {
-                                                    setState(() {
-                                                      seats[index] = 0;
-                                                      print(seats);
-                                                      updateSum(noOfSeats);
-                                                    });
-                                                  }
+                                                  updateSum(noOfSeats);
+                                                  print(seats);
                                                 });
-                                              },
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(
-                                                  isSelected
-                                                      ? Colors.yellow
-                                                      : Colors.transparent,
-                                                ),
-                                                foregroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(
-                                                  isSelected
-                                                      ? Colors.black
-                                                      : Colors.white,
-                                                ),
-                                                textStyle: MaterialStateProperty
-                                                    .all<TextStyle>(
-                                                  TextStyle(
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                                padding: MaterialStateProperty
-                                                    .all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 10),
-                                                ),
-                                                shape:
-                                                    MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                    side: BorderSide(
-                                                      color: Colors.yellow,
-                                                      width: 0.5,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Text(' ${times[index]}'),
-                                            );
+                                              } else {
+                                                setState(() {
+                                                  seats[index] = 0;
+                                                  print(seats);
+                                                  updateSum(noOfSeats);
+                                                });
+                                              }
+                                            });
                                           },
-                                          itemCount: 12,
-                                        ),
-                                      );
-                                    },
-                                  )),
-                            ],
-                          )),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "How many slot do you want?",
-                    style: GoogleFonts.bebasNeue(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 255, 255, 255),
-                    ),
-                  ),
-                  Container(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      height: 190,
-                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                      child: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          return Container(
-                              width: constraints.maxWidth,
-                              height: 10,
-                              child: GridView.builder(
-                                // physics: NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                  crossAxisSpacing: 30,
-                                  mainAxisSpacing: 19,
-                                  childAspectRatio:
-                                      1, // set the aspect ratio of each child widget
-                                ),
-                                itemBuilder: (context, index) {
-                                  return ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _selectedIndex =
-                                            index; // Update the selected index
-                                        int count = 0;
-
-                                        noOfSeats = index;
-                                        updateSum(index);
-                                      });
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        _selectedIndex == index
-                                            ? Colors.yellow
-                                            : Colors.transparent,
-                                      ),
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        _selectedIndex == index
-                                            ? Colors.black
-                                            : Colors.white,
-                                      ),
-                                      textStyle:
-                                          MaterialStateProperty.all<TextStyle>(
-                                        TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 5),
-                                      ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          side: BorderSide(
-                                            color: Colors
-                                                .yellow, // set the border color here
-                                            width:
-                                                0.5, // set the width of the border
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(
+                                              isSelected
+                                                  ? Colors.yellow
+                                                  : Colors.transparent,
+                                            ),
+                                            foregroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(
+                                              isSelected
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                            ),
+                                            textStyle: MaterialStateProperty
+                                                .all<TextStyle>(
+                                              TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                              EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 10),
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: Colors.yellow,
+                                                  width: 0.5,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                            ),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                      ),
+                                          child: Text(' ${times[index]}'),
+                                        );
+                                      },
+                                      itemCount: 12,
                                     ),
-                                    child: Text('${index + 1}'),
                                   );
                                 },
-                                itemCount: 12,
-                              ));
-                        },
+                              )),
+                        ],
                       )),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Your button press logic here
-                    },
-                    child: GestureDetector(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(120, 5, 120, 5),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Book Slots',
-                              style: GoogleFonts.bebasNeue(
-                                fontSize: 25,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "How many slot do you want?",
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+              Container(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  height: 190,
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      return Container(
+                          width: constraints.maxWidth,
+                          height: 10,
+                          child: GridView.builder(
+                            // physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 6,
+                              crossAxisSpacing: 30,
+                              mainAxisSpacing: 19,
+                              childAspectRatio:
+                                  1, // set the aspect ratio of each child widget
                             ),
-                            Text(
-                              'Total Cost: \$$totalPrice',
-                              style: GoogleFonts.bebasNeue(
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        reservedTimes.clear();
+                            itemBuilder: (context, index) {
+                              return ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _selectedIndex =
+                                        index; // Update the selected index
+                                    int count = 0;
 
-                        for (int i = 0; i < seats.length; i++) {
-                          if (seats[i] != 0) {
-                            reservedTimes.add(times[i]);
-                          }
-                        }
-                        print(reservedTimes);
-                        final slot = Slot(
-                            no_of_slots: reservedTimes.length,
-                            no_of_pc: noOfSeats + 1,
-                            price: totalPrice,
-                            date: selectedDate,
-                            type: "PC",
-                            time: reservedTimes);
-                        _addBook(slot);
-                      },
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.yellow),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                                    noOfSeats = index;
+                                    updateSum(index);
+                                  });
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    _selectedIndex == index
+                                        ? Colors.yellow
+                                        : Colors.transparent,
+                                  ),
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    _selectedIndex == index
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                  textStyle:
+                                      MaterialStateProperty.all<TextStyle>(
+                                    TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  padding: MaterialStateProperty.all<
+                                      EdgeInsetsGeometry>(
+                                    EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                  ),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        color: Colors
+                                            .yellow, // set the border color here
+                                        width:
+                                            0.5, // set the width of the border
+                                      ),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                                child: Text('${index + 1}'),
+                              );
+                            },
+                            itemCount: 12,
+                          ));
+                    },
+                  )),
+              ElevatedButton(
+                onPressed: () {
+                  // Storing data in Firestore collection
+                  FirebaseFirestore.instance.collection('slots').add({
+                    'date': selectedDate,
+                    'id': 'currentUserId',
+                    'no_of_slots': reservedTimes.length,
+                    'no_of_pc': noOfSeats,
+                    'times': timingsSelectedIndexes
+                        .map((index) => times[index])
+                        .toList(),
+                    'total_price': totalPrice,
+                    'mode': 'PC',
+                  }).then((value) {
+                    // Data stored successfully, you can perform any additional actions here
+                    print('Data stored successfully!');
+                  }).catchError((error) {
+                    // An error occurred while storing data
+                    print('Error: $error');
+                  });
+                },
+                child: GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(120, 5, 120, 5),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Book Slots',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 25,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
                         ),
-                      ),
+                        Text(
+                          'Total Cost: \$$totalPrice',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              );
-            }));
+                  onTap: () {
+                    reservedTimes.clear();
+
+                    for (int i = 0; i < seats.length; i++) {
+                      if (seats[i] != 0) {
+                        reservedTimes.add(times[i]);
+                      }
+                    }
+                    int newNoOfSeats = noOfSeats + 1;
+                    // Store data in Firestore collection
+                    FirebaseFirestore.instance.collection('slots').add({
+                      'date': selectedDate,
+                      'id': 'currentUserId',
+                      'no_of_slots': reservedTimes.length,
+                      'no_of_pc': newNoOfSeats,
+                      'times': timingsSelectedIndexes
+                          .map((index) => times[index])
+                          .toList(),
+                      'total_price': totalPrice,
+                      'mode': 'PC',
+                    }).then((value) {
+                      // Data stored successfully, you can perform any additional actions here
+                      print('Data stored successfully!');
+                    }).catchError((error) {
+                      // An error occurred while storing data
+                      print('Error: $error');
+                    });
+                  },
+                ),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.yellow),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }));
   }
 }
