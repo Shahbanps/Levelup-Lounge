@@ -159,15 +159,15 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => EditProfilePage(
-                              firstName: (snapshot.data!.data()
-                                  as Map<String, dynamic>)['firstName'],
-                              lastName: (snapshot.data!.data()
-                                  as Map<String, dynamic>)['lastName'],
-                              email: email,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage(
+                                firstName: (snapshot.data!.data()
+                                    as Map<String, dynamic>)['firstName'],
+                                lastName: (snapshot.data!.data()
+                                    as Map<String, dynamic>)['lastName'],
+                                email: email,
+                              ),
                             ),
-                          ),
                         );
                       },
                       child: Text(

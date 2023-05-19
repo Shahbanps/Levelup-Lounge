@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'; // Import the Firestore p
 
 import '../User/change_password.dart';
 import 'add_item_store.dart';
-import 'edit_item.dart';
+import 'admin_edit_item.dart';
 
 class AdminStorePage extends StatefulWidget {
   @override
@@ -203,9 +203,6 @@ class _AdminStorePageState extends State<AdminStorePage> {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 30,
-                  // ),
                 ],
               ),
             )

@@ -7,7 +7,8 @@ import '../User/feedback.dart';
 import '../User/profile_screen.dart';
 import '../User/store_dashboard.dart';
 import 'admin_dashboard.dart';
-import 'admin_profile.dart';
+
+import 'admin_feedback.dart';
 import 'admin_store_dashboard.dart';
 
 class AdminNavbar extends StatefulWidget {
@@ -24,8 +25,8 @@ class _AdminNavbarState extends State<AdminNavbar> {
   var Pages = [
     AdminDashboard(),
     AdminStorePage(),
-    Feed_Back(),
-    AdminProfileDashboard()
+    FeedbackAdminPage(),
+    ProfileDashboard()
   ];
   @override
   Widget build(BuildContext context) {

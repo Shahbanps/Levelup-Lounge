@@ -36,7 +36,7 @@ class _AddItemState extends State<AddItem> {
     if (pickedFile != null) {
       // Upload the file to Firebase Storage
       storage.Reference storageRef =
-          storage.FirebaseStorage.instance.ref().child('items/${path.name!}');
+          storage.FirebaseStorage.instance.ref().child('items/${path.name}');
       storage.UploadTask uploadTask =
           storageRef.putFile(File(pickedFile!.path!));
       storage.TaskSnapshot taskSnapshot =

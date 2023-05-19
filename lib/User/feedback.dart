@@ -98,13 +98,6 @@ class _Feed_BackState extends State<Feed_Back> {
                         padding: EdgeInsets.all(8),
                         child: Row(
                           children: [
-                            // if (pickedFile == null)
-                            //   ClipRRect(
-                            //     borderRadius: BorderRadius.circular(20),
-                            //     child: Image(
-                            //       image: AssetImage('assets/upload_image.gif'),
-                            //     ),
-                            //   ),
                             if (pickedFile != null)
                               SizedBox(
                                 height: 30,
