@@ -283,6 +283,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                         GestureDetector(
                           onTap: () {
                             FirebaseAuth.instance.signOut();
+                            (Route<dynamic> route) => false;
                           },
                           child: Center(
                             child: Text(

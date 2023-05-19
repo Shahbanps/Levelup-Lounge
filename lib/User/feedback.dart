@@ -4,9 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,6 +17,8 @@ class Feed_Back extends StatefulWidget {
 }
 
 class _Feed_BackState extends State<Feed_Back> {
+  User? currentUser;
+
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
@@ -197,6 +197,20 @@ class _Feed_BackState extends State<Feed_Back> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    final auth = FirebaseAuth.instance;
+    final user = auth.currentUser;
+    setState(() {
+      currentUser = user;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -254,40 +268,87 @@ class _Feed_BackState extends State<Feed_Back> {
             Spacer(),
             ElevatedButton(
               onPressed: () {
-                // Get the current date and time
-                DateTime now = DateTime.now();
+                if (currentUser != null) {
+                  // Get the current date and time
+                  DateTime now = DateTime.now();
 
-                // Prepare the feedback data to be stored in Firestore
-                Map<String, dynamic> feedbackData = {
-                  'feedback_type': feedbackTypes[buttonStates.indexOf(true)],
-                  'description': _descriptionController.text,
-                  'screenshot_url':
-                      pickedFile != null ? pickedFile!.path! : null,
-                  'phone_number': _phoneNumberController.text,
-                  'date': now,
-                };
+                  // Prepare the feedback data to be stored in Firestore
+                  Map<String, dynamic> feedbackData = {
+                    'feedback_type': feedbackTypes[buttonStates.indexOf(true)],
+                    'description': _descriptionController.text,
+                    'screenshot_url':
+                        pickedFile != null ? pickedFile!.path! : null,
+                    'phone_number': _phoneNumberController.text,
+                    'date': now,
+                    'user_id': currentUser
+                        ?.uid, // Add the user ID to the feedback data
+                  };
 
-                // Store the feedback data in Firestore
-                FirebaseFirestore.instance
-                    .collection('feedback')
-                    .add(feedbackData)
-                    .then((value) {
-                  // Feedback stored successfully
-                  print('Feedback stored in Firestore');
-                  // TODO: Show a success message to the user
+                  FirebaseFirestore.instance
+                      .collection('feedback')
+                      .add(feedbackData)
+                      .then((value) {
+                    // Feedback stored successfully
+                    print('Feedback stored in Firestore');
+                    // Show an alert dialog
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.yellow,
+                          title: Text(
+                            'Success',
+                            style: GoogleFonts.bebasNeue(
+                              fontSize: 15,
+                            ),
+                          ),
+                          content: Text(
+                            'Feedback submitted successfully.',
+                            style: GoogleFonts.bebasNeue(
+                              fontSize: 15,
+                            ),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // Close the dialog
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'OK',
+                                style: GoogleFonts.bebasNeue(
+                                  fontSize: 15,
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(Colors
+                                        .black), // Set the desired color here
+                                // Add other customizations if needed
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
 
-                  // Clear the text controllers and reset the variables
-                  _phoneNumberController.clear();
-                  _descriptionController.clear();
-                  pickedFile = null;
-                  setState(() {
-                    buttonStates = List<bool>.filled(5, false);
+                    // Clear the text controllers and reset the variables
+                    _phoneNumberController.clear();
+                    _descriptionController.clear();
+                    pickedFile = null;
+                    setState(() {
+                      buttonStates = List<bool>.filled(5, false);
+                    });
+                  }).catchError((error) {
+                    // Error occurred while storing feedback
+                    print('Error storing feedback: $error');
+                    // TODO: Show an error message to the user
                   });
-                }).catchError((error) {
-                  // Error occurred while storing feedback
-                  print('Error storing feedback: $error');
+                } else {
+                  // User not signed in
+                  print('User not signed in');
                   // TODO: Show an error message to the user
-                });
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(120, 5, 160, 5),
