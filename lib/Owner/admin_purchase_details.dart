@@ -1,43 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class PurchaseDetails extends StatefulWidget {
+class PurchaseAdminPage extends StatefulWidget {
   @override
-  _PurchaseDetailsState createState() => _PurchaseDetailsState();
+  _PurchaseAdminPageState createState() => _PurchaseAdminPageState();
 }
 
-class _PurchaseDetailsState extends State<PurchaseDetails> {
+class _PurchaseAdminPageState extends State<PurchaseAdminPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   List<DocumentSnapshot> _purchases = [];
   String _selectedFilter = 'Today';
-  String _currentUserName = '';
 
   @override
   void initState() {
     super.initState();
-    _fetchCurrentUserName();
-    _fetchPurchases();
+    _fetchpurchases();
   }
 
-  void _fetchCurrentUserName() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      DocumentSnapshot userSnapshot =
-          await _firestore.collection('users').doc(currentUser.uid).get();
-
-      String firstName = userSnapshot['firstName'];
-      String lastName = userSnapshot['lastName'];
-
-      setState(() {
-        _currentUserName = '$firstName $lastName';
-      });
-    }
-  }
-
-  void _fetchPurchases() async {
+  void _fetchpurchases() async {
     QuerySnapshot querySnapshot = await _firestore
         .collection('purchase')
         .orderBy('date', descending: true)
@@ -48,12 +29,11 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
     });
   }
 
-  List<DocumentSnapshot> _getFilteredPurchases() {
+  List<DocumentSnapshot> _getFilteredpurchases() {
     DateTime now = DateTime.now();
     if (_selectedFilter == 'Today') {
       return _purchases
           .where((purchase) =>
-              purchase['user_name'] == _currentUserName &&
               purchase['date'].toDate().day == now.day &&
               purchase['date'].toDate().month == now.month &&
               purchase['date'].toDate().year == now.year)
@@ -62,7 +42,6 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
       DateTime yesterday = now.subtract(Duration(days: 1));
       return _purchases
           .where((purchase) =>
-              purchase['user_name'] == _currentUserName &&
               purchase['date'].toDate().day == yesterday.day &&
               purchase['date'].toDate().month == yesterday.month &&
               purchase['date'].toDate().year == yesterday.year)
@@ -70,21 +49,18 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
     } else if (_selectedFilter == 'This Month') {
       return _purchases
           .where((purchase) =>
-              purchase['user_name'] == _currentUserName &&
               purchase['date'].toDate().month == now.month &&
               purchase['date'].toDate().year == now.year)
           .toList();
     } else {
-      return _purchases
-          .where((purchase) => purchase['user_name'] == _currentUserName)
-          .toList();
+      return _purchases;
     }
   }
 
-  Widget _buildPurchaseItem(DocumentSnapshot purchase) {
+  Widget _buildpurchaseItem(DocumentSnapshot purchase) {
     return ListTile(
       title: Text(
-        'Items: ${purchase['items_bought'].join(', ')}',
+        'Items:${purchase['items_bought'].join(', ')}',
         style: GoogleFonts.bebasNeue(
           fontSize: 20,
           color: Color.fromARGB(255, 224, 224, 224),
@@ -124,14 +100,14 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
 
   @override
   Widget build(BuildContext context) {
-    List<DocumentSnapshot> filteredPurchases = _getFilteredPurchases();
+    List<DocumentSnapshot> filteredpurchases = _getFilteredpurchases();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 100,
         title: Text(
-          'Purchase Details',
+          'Purchase Deails',
           style: GoogleFonts.bebasNeue(
             fontSize: 20,
             color: Color.fromARGB(255, 224, 224, 224),
@@ -183,7 +159,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
               ),
               SizedBox(height: 10),
               Expanded(
-                child: filteredPurchases.isEmpty
+                child: filteredpurchases.isEmpty
                     ? Center(
                         child: Text(
                           'No purchases',
@@ -194,12 +170,12 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: filteredPurchases.length,
+                        itemCount: filteredpurchases.length,
                         itemBuilder: (context, index) {
                           return Column(
                             children: [
-                              _buildPurchaseItem(filteredPurchases[index]),
-                              if (index < filteredPurchases.length - 1)
+                              _buildpurchaseItem(filteredpurchases[index]),
+                              if (index < filteredpurchases.length - 1)
                                 Divider(
                                   color: Color.fromARGB(255, 255, 255, 255),
                                   height: 0,

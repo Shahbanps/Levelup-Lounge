@@ -7,21 +7,20 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/User/purchase_details.dart';
 
 import '../Owner/admin_purchase_details.dart';
-import 'booking_details.dart';
-import 'change_password.dart';
-import 'edit_profile.dart';
+import '../User/booking_details.dart';
+import '../User/change_password.dart';
+import '../User/edit_profile.dart';
 
-class ProfileDashboard extends StatefulWidget {
-  const ProfileDashboard({Key? key}) : super(key: key);
+class AdminProfile extends StatefulWidget {
+  const AdminProfile({Key? key}) : super(key: key);
 
   @override
-  _ProfileDashboardState createState() => _ProfileDashboardState();
+  AdminProfileState createState() => AdminProfileState();
 }
 
-class _ProfileDashboardState extends State<ProfileDashboard> {
+class AdminProfileState extends State<AdminProfile> {
   String firstName = '';
   String lastName = '';
   String email = '';
@@ -229,7 +228,7 @@ class _ProfileDashboardState extends State<ProfileDashboard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PurchaseDetails()),
+                                  builder: (context) => PurchaseAdminPage()),
                             );
                           },
                           child: Text('Purchase details',
