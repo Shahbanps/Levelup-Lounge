@@ -145,14 +145,6 @@ class AdminProfileState extends State<AdminProfile> {
                       color: Colors.white,
                     ),
                   ),
-                  // SizedBox(height: 5.0),
-                  // Text(
-                  //   address,
-                  //   style: GoogleFonts.bebasNeue(
-                  //     fontSize: 20,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
                   SizedBox(height: 16.0),
                   Container(
                     width: double.infinity,

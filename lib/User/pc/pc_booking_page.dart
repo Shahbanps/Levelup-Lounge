@@ -1,12 +1,15 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unnecessary_brace_in_string_interps
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PCBookingPage extends StatefulWidget {
-  PCBookingPage({super.key});
+  const PCBookingPage({Key? key}) : super(key: key);
 
   @override
-  State<PCBookingPage> createState() => _PCBookingPageState();
+  _PCBookingPageState createState() => _PCBookingPageState();
 }
 
 class _PCBookingPageState extends State<PCBookingPage> {
@@ -79,6 +82,95 @@ class _PCBookingPageState extends State<PCBookingPage> {
     });
   }
 
+  Future<void> checkSlotAvailabilityAndBook() async {
+    int totalPcnow = 0;
+    List selectedTimes =
+        timingsSelectedIndexes.map((index) => times[index]).toList();
+    String selectedDatelocal = selectedDate.toIso8601String().substring(0, 10);
+    print(selectedDate);
+    print(selectedTimes);
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection('slots')
+        .where('date', isEqualTo: selectedDatelocal)
+        .where('times', arrayContainsAny: selectedTimes)
+        .get(GetOptions(source: Source.server));
+
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot.docs;
+
+    bool slotsAvailable = true;
+
+    if (docs.isNotEmpty) {
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in docs) {
+        int bookedPCs = doc['no_of_pc'];
+        print('BookedPC ${bookedPCs}');
+        totalPcnow += bookedPCs;
+        if (totalPcnow >= 12) {
+          slotsAvailable = false;
+        }
+      }
+      print(totalPcnow);
+    }
+
+    if (slotsAvailable) {
+      int newNoOfSeats = noOfSeats + 1;
+      if (totalPcnow + newNoOfSeats <= 12) {
+        // Store data in Firestore collection
+        FirebaseFirestore.instance.collection('slots').add({
+          'date': selectedDate.toIso8601String().substring(0, 10),
+          'id': 'currentUserId',
+          'no_of_slots': reservedTimes.length,
+          'no_of_pc': newNoOfSeats,
+          'times': selectedTimes,
+          'total_price': totalPrice,
+          'mode': 'PC',
+        }).then((value) async {
+          Fluttertoast.showToast(
+            msg: 'Slots booked successfully!',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+          print('Data stored successfully!');
+        }).catchError((error) {
+          Fluttertoast.showToast(
+            msg: 'An error occurred while booking slots. Please try again.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          print('Error: $error');
+        });
+      } else {
+        // Slots for the selected times are already booked
+        int available = 12 - totalPcnow;
+        Fluttertoast.showToast(
+          msg: 'Only $available PC\'s are available',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } else {
+      // Slots for the selected times are already booked
+      Fluttertoast.showToast(
+        msg:
+            'The selected slots are already booked. Please choose a different time slot.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,8 +190,8 @@ class _PCBookingPageState extends State<PCBookingPage> {
           title: Text(
             'PC Booking',
             style: GoogleFonts.bebasNeue(
-              fontSize: 25,
-              color: Colors.white,
+              fontSize: 27,
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
         ),
@@ -141,23 +233,26 @@ class _PCBookingPageState extends State<PCBookingPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 25, horizontal: 20),
-                                  child: Text('${date.day}-${date.month}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: isSelected
-                                            ? Colors.white
-                                            : Colors.black,
-                                      )),
-                                ),
-                              ))
-                            : Center(
-                                child: Text('${date.day}-${date.month}',
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  child: Text(
+                                    '${date.day}-${date.month}',
+                                    style: GoogleFonts.bebasNeue(
+                                      fontSize: 20,
                                       color: isSelected
                                           ? Colors.white
                                           : Colors.black,
-                                    ))),
+                                    ),
+                                  ),
+                                ),
+                              ))
+                            : Center(
+                                child: Text(
+                                '${date.day}-${date.month}',
+                                style: GoogleFonts.bebasNeue(
+                                  fontSize: 20,
+                                  color:
+                                      isSelected ? Colors.white : Colors.black,
+                                ),
+                              )),
                       ),
                     );
                   },
@@ -182,8 +277,8 @@ class _PCBookingPageState extends State<PCBookingPage> {
                       child: Text(
                         "Individual  .  PC's  .  100₹  .  per slot / per person",
                         style: GoogleFonts.bebasNeue(
-                          fontSize: 15,
-                          color: Colors.white,
+                          fontSize: 12,
+                          color: Color.fromARGB(255, 255, 255, 255),
                         ),
                       ),
                     ),
@@ -215,7 +310,7 @@ class _PCBookingPageState extends State<PCBookingPage> {
                           Text(
                             "Available slot timings",
                             style: GoogleFonts.bebasNeue(
-                              fontSize: 16,
+                              fontSize: 20,
                               color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
@@ -308,7 +403,11 @@ class _PCBookingPageState extends State<PCBookingPage> {
                                               ),
                                             ),
                                           ),
-                                          child: Text(' ${times[index]}'),
+                                          child: Text(
+                                            ' ${times[index]}',
+                                            style: GoogleFonts.bebasNeue(
+                                                fontSize: 15),
+                                          ),
                                         );
                                       },
                                       itemCount: 12,
@@ -324,9 +423,9 @@ class _PCBookingPageState extends State<PCBookingPage> {
                 height: 10,
               ),
               Text(
-                "How many slot do you want?",
+                "How many seats do you want?",
                 style: GoogleFonts.bebasNeue(
-                  fontSize: 16,
+                  fontSize: 20,
                   color: Color.fromARGB(255, 255, 255, 255),
                 ),
               ),
@@ -399,7 +498,10 @@ class _PCBookingPageState extends State<PCBookingPage> {
                                     ),
                                   ),
                                 ),
-                                child: Text('${index + 1}'),
+                                child: Text(
+                                  '${index + 1}',
+                                  style: GoogleFonts.bebasNeue(),
+                                ),
                               );
                             },
                             itemCount: 12,
@@ -409,23 +511,8 @@ class _PCBookingPageState extends State<PCBookingPage> {
               ElevatedButton(
                 onPressed: () {
                   // Storing data in Firestore collection
-                  FirebaseFirestore.instance.collection('slots').add({
-                    'date': selectedDate,
-                    'id': 'currentUserId',
-                    'no_of_slots': reservedTimes.length,
-                    'no_of_pc': noOfSeats,
-                    'times': timingsSelectedIndexes
-                        .map((index) => times[index])
-                        .toList(),
-                    'total_price': totalPrice,
-                    'mode': 'PC',
-                  }).then((value) {
-                    // Data stored successfully, you can perform any additional actions here
-                    print('Data stored successfully!');
-                  }).catchError((error) {
-                    // An error occurred while storing data
-                    print('Error: $error');
-                  });
+                  // Check slot availability and book
+                  checkSlotAvailabilityAndBook();
                 },
                 child: GestureDetector(
                   child: Padding(
@@ -435,48 +522,20 @@ class _PCBookingPageState extends State<PCBookingPage> {
                         Text(
                           'Book Slots',
                           style: GoogleFonts.bebasNeue(
-                            fontSize: 25,
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontSize: 27,
+                            color: Color.fromARGB(255, 3, 3, 3),
                           ),
                         ),
                         Text(
                           'Total Cost: \$$totalPrice',
                           style: GoogleFonts.bebasNeue(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontSize: 15,
+                            color: Color.fromARGB(255, 3, 3, 3),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  onTap: () {
-                    reservedTimes.clear();
-
-                    for (int i = 0; i < seats.length; i++) {
-                      if (seats[i] != 0) {
-                        reservedTimes.add(times[i]);
-                      }
-                    }
-                    int newNoOfSeats = noOfSeats + 1;
-                    // Store data in Firestore collection
-                    FirebaseFirestore.instance.collection('slots').add({
-                      'date': selectedDate,
-                      'id': 'currentUserId',
-                      'no_of_slots': reservedTimes.length,
-                      'no_of_pc': newNoOfSeats,
-                      'times': timingsSelectedIndexes
-                          .map((index) => times[index])
-                          .toList(),
-                      'total_price': totalPrice,
-                      'mode': 'PC',
-                    }).then((value) {
-                      // Data stored successfully, you can perform any additional actions here
-                      print('Data stored successfully!');
-                    }).catchError((error) {
-                      // An error occurred while storing data
-                      print('Error: $error');
-                    });
-                  },
                 ),
                 style: ButtonStyle(
                   backgroundColor:
