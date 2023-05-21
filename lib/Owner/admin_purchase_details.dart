@@ -107,7 +107,7 @@ class _PurchaseAdminPageState extends State<PurchaseAdminPage> {
         backgroundColor: Colors.black,
         elevation: 100,
         title: Text(
-          'Purchase Deails',
+          'Purchase Details',
           style: GoogleFonts.bebasNeue(
             fontSize: 20,
             color: Color.fromARGB(255, 224, 224, 224),

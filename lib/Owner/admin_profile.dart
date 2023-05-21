@@ -12,6 +12,7 @@ import '../Owner/admin_purchase_details.dart';
 import '../User/booking_details.dart';
 import '../User/change_password.dart';
 import '../User/edit_profile.dart';
+import 'admin_booking_details.dart';
 
 class AdminProfile extends StatefulWidget {
   const AdminProfile({Key? key}) : super(key: key);
@@ -246,7 +247,7 @@ class AdminProfileState extends State<AdminProfile> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BookingDetails(),
+                              builder: (context) => BookingAdminPage(),
                             ));
                           },
                           child: Text('Booking Details',

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PCBookingPage extends StatefulWidget {
   const PCBookingPage({Key? key}) : super(key: key);
@@ -50,6 +51,7 @@ class _PCBookingPageState extends State<PCBookingPage> {
   int selectedTimeSLot = 0;
   int seatCount = 12;
   int _selectedIndex = -1;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   int totalPrice = 0;
 
@@ -94,6 +96,7 @@ class _PCBookingPageState extends State<PCBookingPage> {
         .collection('slots')
         .where('date', isEqualTo: selectedDatelocal)
         .where('times', arrayContainsAny: selectedTimes)
+        .where('mode', isEqualTo: "PC")
         .get(GetOptions(source: Source.server));
 
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = snapshot.docs;
@@ -115,10 +118,13 @@ class _PCBookingPageState extends State<PCBookingPage> {
     if (slotsAvailable) {
       int newNoOfSeats = noOfSeats + 1;
       if (totalPcnow + newNoOfSeats <= 12) {
+        User? user = auth.currentUser;
+        String? userId = user?.uid;
         // Store data in Firestore collection
         FirebaseFirestore.instance.collection('slots').add({
           'date': selectedDate.toIso8601String().substring(0, 10),
-          'id': 'currentUserId',
+          'booking_date': selectedDate,
+          'id': userId,
           'no_of_slots': reservedTimes.length,
           'no_of_pc': newNoOfSeats,
           'times': selectedTimes,
@@ -149,7 +155,7 @@ class _PCBookingPageState extends State<PCBookingPage> {
         // Slots for the selected times are already booked
         int available = 12 - totalPcnow;
         Fluttertoast.showToast(
-          msg: 'Only $available PC\'s are available',
+          msg: 'Only $available PC\'s available',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

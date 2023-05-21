@@ -1,227 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class BookingAdminPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AdminBookingDetails(),
-    );
-  }
+  _BookingAdminPageState createState() => _BookingAdminPageState();
 }
 
-class AdminBookingDetails extends StatefulWidget {
-  @override
-  Admin_BookingDetailsState createState() => Admin_BookingDetailsState();
-}
-
-class Admin_BookingDetailsState extends State<AdminBookingDetails> {
-  String _selectedDateFilter = "Today";
-  List<Map<String, dynamic>> _bookingData = [
-    {
-      "time": "10:00 AM - 12:00 PM",
-      "slotsBooked": 4,
-      "type": "PC",
-      "date": "2023-05-04"
-    },
-    {
-      "time": "02:00 PM - 04:00 PM",
-      "slotsBooked": 2,
-      "type": "Squad Room",
-      "date": "2023-05-03"
-    },
-    {
-      "time": "05:00 PM - 06:00 PM",
-      "slotsBooked": 1,
-      "type": "Driving Setup",
-      "date": "2023-05-02"
-    },
-    {
-      "time": "05:00 PM - 06:00 PM",
-      "slotsBooked": 1,
-      "type": "Driving Setup",
-      "date": "2023-05-02"
-    },
-    {
-      "time": "05:00 PM - 06:00 PM",
-      "slotsBooked": 1,
-      "type": "Driving Setup",
-      "date": "2023-05-02"
-    },
-    {
-      "time": "05:00 PM - 06:00 PM",
-      "slotsBooked": 3,
-      "type": "Driving Setup",
-      "date": "2023-05-02"
-    },
-    {
-      "time": "05:00 PM - 06:00 PM",
-      "slotsBooked": 2,
-      "type": "Driving Setup",
-      "date": "2023-05-02"
-    },
-  ];
-
-  List<Map<String, dynamic>> _filteredData = [];
+class _BookingAdminPageState extends State<BookingAdminPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<DocumentSnapshot> _slots = [];
+  String _selectedFilter = 'Today';
 
   @override
   void initState() {
     super.initState();
-    _filterData();
+    _fetchSlots();
   }
 
-  void _filterData() {
-    _filteredData.clear();
-    final now = DateTime.now();
-    final todayDate =
-        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-    final yesterdayDate =
-        "${now.year}-${now.month.toString().padLeft(2, '0')}-${(now.day - 1).toString().padLeft(2, '0')}";
-    final thisMonth = "${now.year}-${now.month.toString().padLeft(2, '0')}-";
-    for (var booking in _bookingData) {
-      if (_selectedDateFilter == "Today" && booking['date'] == todayDate) {
-        _filteredData.add(booking);
-      } else if (_selectedDateFilter == "Yesterday" &&
-          booking['date'] == yesterdayDate) {
-        _filteredData.add(booking);
-      } else if (_selectedDateFilter == "This Month" &&
-          booking['date'].startsWith(thisMonth)) {
-        _filteredData.add(booking);
-      }
+  void _fetchSlots() async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('slots')
+        .orderBy('booking_date', descending: true)
+        .get();
+
+    setState(() {
+      _slots = querySnapshot.docs;
+    });
+  }
+
+  List<DocumentSnapshot> _getFilteredSlots() {
+    DateTime now = DateTime.now();
+    if (_selectedFilter == 'Today') {
+      return _slots
+          .where((slot) =>
+              slot['booking_date'].toDate().day == now.day &&
+              slot['booking_date'].toDate().month == now.month &&
+              slot['booking_date'].toDate().year == now.year)
+          .toList();
+    } else if (_selectedFilter == 'Yesterday') {
+      DateTime yesterday = now.subtract(Duration(days: 1));
+      return _slots
+          .where((slot) =>
+              slot['booking_date'].toDate().day == yesterday.day &&
+              slot['booking_date'].toDate().month == yesterday.month &&
+              slot['booking_date'].toDate().year == yesterday.year)
+          .toList();
+    } else if (_selectedFilter == 'This Month') {
+      return _slots
+          .where((slot) =>
+              slot['booking_date'].toDate().month == now.month &&
+              slot['booking_date'].toDate().year == now.year)
+          .toList();
+    } else {
+      return _slots;
     }
+  }
+
+  Widget _buildSlotItem(DocumentSnapshot slot) {
+    return ListTile(
+      title: Text(
+        'Time: ${slot['times'].join(', ')}',
+        style: GoogleFonts.bebasNeue(
+          fontSize: 20,
+          color: Color.fromARGB(255, 224, 224, 224),
+        ),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 5),
+          Text(
+            'Total Price: ${slot['total_price']}',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 18,
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'User ID: ${slot['id']}',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 18,
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'No. of PCs: ${slot['no_of_pc']}',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 18,
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'Mode: ${slot['mode']}',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 18,
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            slot['booking_date'].toDate().toString(),
+            style: GoogleFonts.bebasNeue(
+              fontSize: 10,
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    List<DocumentSnapshot> filteredSlots = _getFilteredSlots();
+
     return Scaffold(
-      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        elevation: 0,
+        backgroundColor: Colors.black,
+        elevation: 100,
         title: Text(
-          'Booking Details',
+          'Slot Details',
           style: GoogleFonts.bebasNeue(
-            fontSize: 30,
-            color: Colors.white,
+            fontSize: 20,
+            color: Color.fromARGB(255, 224, 224, 224),
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
       body: Container(
-        color: Colors.black,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.yellow,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: DropdownButton(
-                value: _selectedDateFilter,
-                style: GoogleFonts.bebasNeue(
-                  color: Colors.white,
+        padding: const EdgeInsets.all(8.0),
+        color: Color.fromARGB(255, 25, 25, 25),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 44, 44, 44),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(8.0, 3, 8, 3),
+                decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                items: [
-                  DropdownMenuItem(
-                    child: Text(
-                      "Today",
-                      style: GoogleFonts.bebasNeue(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ),
-                    value: "Today",
+                child: DropdownButton<String>(
+                  value: _selectedFilter,
+                  items: ['Today', 'Yesterday', 'This Month']
+                      .map((filter) => DropdownMenuItem<String>(
+                            value: filter,
+                            child: Text(
+                              filter,
+                              style: GoogleFonts.bebasNeue(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedFilter = value!;
+                    });
+                  },
+                  style: GoogleFonts.bebasNeue(
+                    fontSize: 20,
+                    color: Color.fromARGB(255, 0, 0, 0),
                   ),
-                  DropdownMenuItem(
-                    child: Text(
-                      "Yesterday",
-                      style: GoogleFonts.bebasNeue(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ),
-                    value: "Yesterday",
-                  ),
-                  DropdownMenuItem(
-                    child: Text(
-                      "This Month",
-                      style: GoogleFonts.bebasNeue(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ),
-                    value: "This Month",
-                  ),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedDateFilter = value ?? "";
-                    _filterData();
-                  });
-                },
+                  dropdownColor: Colors.yellow,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Divider(
-              color: Colors.white,
-              height: 0,
-              thickness: 0.3,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredData.length,
-                itemBuilder: (context, index) {
-                  final booking = _filteredData[index];
-                  return Container(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    padding: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Time: ${booking['time']}",
+              SizedBox(height: 10),
+              Expanded(
+                child: filteredSlots.isEmpty
+                    ? Center(
+                        child: Text(
+                          'No slots',
                           style: GoogleFonts.bebasNeue(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontSize: 35,
+                            color: Color.fromARGB(255, 255, 255, 255),
                           ),
                         ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          "Slots Booked: ${booking['slotsBooked']}",
-                          style: GoogleFonts.bebasNeue(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          "Type: ${booking['type']}",
-                          style: GoogleFonts.bebasNeue(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                      )
+                    : ListView.builder(
+                        itemCount: filteredSlots.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              _buildSlotItem(filteredSlots[index]),
+                              if (index < filteredSlots.length - 1)
+                                Divider(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  height: 0,
+                                  thickness: 0.3,
+                                ),
+                            ],
+                          );
+                        },
+                      ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
