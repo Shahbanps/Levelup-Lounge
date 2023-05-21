@@ -6,7 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:file_picker/file_picker.dart';
 
 class Feed_Back extends StatefulWidget {
@@ -47,7 +48,7 @@ class _Feed_BackState extends State<Feed_Back> {
       decoration: BoxDecoration(
           color: Color.fromARGB(255, 42, 42, 42),
           borderRadius: BorderRadius.circular(10)),
-      height: 200,
+      height: 173,
       child: Stack(
         children: <Widget>[
           TextField(
@@ -258,11 +259,11 @@ class _Feed_BackState extends State<Feed_Back> {
             buildCheckItem("Other issues.", 3, buttonStates, onButtonSelected),
             buildCheckItem("Suggestions", 4, buttonStates, onButtonSelected),
             SizedBox(
-              height: 20,
+              height: 5,
             ),
             buildFeedbackForm(),
             SizedBox(
-              height: 20,
+              height: 5,
             ),
             buildNuberField(_phoneNumberController),
             Spacer(),
@@ -339,6 +340,7 @@ class _Feed_BackState extends State<Feed_Back> {
                     setState(() {
                       buttonStates = List<bool>.filled(5, false);
                     });
+                    FocusScope.of(context).unfocus();
                   }).catchError((error) {
                     // Error occurred while storing feedback
                     print('Error storing feedback: $error');

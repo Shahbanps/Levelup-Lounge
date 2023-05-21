@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../auth/auth_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override
@@ -11,6 +16,42 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   TextEditingController _currentPasswordController = TextEditingController();
   TextEditingController _newPasswordController = TextEditingController();
   TextEditingController _confirmNewPasswordController = TextEditingController();
+
+  final AuthService _authService = AuthService();
+
+  void _updatePassword(String newPassword) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser; // Get the current user
+      if (user != null) {
+        // Reauthenticate the current user
+        AuthCredential credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: _currentPasswordController.text,
+        );
+        await user.reauthenticateWithCredential(credential);
+
+        // Perform password update
+        await user.updatePassword(newPassword);
+
+        Fluttertoast.showToast(
+          msg: 'Password changed successfully',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('Error changing password: $e');
+      Fluttertoast.showToast(
+        msg: 'Failed to change password: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,16 +98,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       borderSide: BorderSide(color: Colors.yellow),
                     ),
                   ),
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please enter your current password';
-                  //   }
-                  //   // Add custom validation logic here
-                  //   return null;
-                  // },
-                  // onSaved: (value) {
-                  //   _currentPassword = value;
-                  // },
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
@@ -86,16 +117,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       borderSide: BorderSide(color: Colors.yellow),
                     ),
                   ),
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please enter a new password';
-                  //   }
-                  //   // Add custom validation logic here
-                  //   return null;
-                  // },
-                  // onSaved: (value) {
-                  //   _newPassword = value;
-                  // },
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
@@ -115,28 +136,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       borderSide: BorderSide(color: Colors.yellow),
                     ),
                   ),
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please confirm your new password';
-                  //   }
-                  //   if (value != _newPassword) {
-                  //     return 'Passwords do not match';
-                  //   }
-                  //   // Add custom validation logic here
-                  //   return null;
-                  // },
-                  // onSaved: (value) {
-                  //   _confirmNewPassword = value;
-                  // },
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
-                    // if (_formKey.currentState.validate()) {
-                    //   // Save the form fields
-                    //   _formKey.currentState.save();
-                    //   // Call your change password API or function here
-                    // }
+                    if (_formKey.currentState!.validate()) {
+                      String newPassword = _newPasswordController.text;
+                      _updatePassword(newPassword);
+                    }
                   },
                   child: Text(
                     'Save Changes',

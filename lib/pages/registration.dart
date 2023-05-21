@@ -89,258 +89,275 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            // ignore: prefer_const_literals_to_create_immutables
-            children: [
-              // phone number
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Register Up",
-                    style: GoogleFonts.bebasNeue(fontSize: 46),
-                  ),
-                ],
-              ),
-              SizedBox(height: 70),
-              Row(
-                children: [
-                  Container(
-                    width: 120,
-                    child: Text(
-                      "Phone number",
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 216, 216, 216),
-                        border: Border.all(
-                            color: Color.fromARGB(255, 255, 255, 255)),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      width: 270,
-                      height: 50,
-                      child: TextField(
-                        controller: _phoneNumberController,
-                        decoration: InputDecoration(border: InputBorder.none),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //Name
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  Container(
-                    width: 120,
-                    child: Text(
-                      "Name",
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 221, 221, 221),
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          )),
-                      width: 150,
-                      height: 50,
-                      child: TextField(
-                        controller: _firstNameController,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "firstname",
-                            hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 192, 191, 191))),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 1.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 221, 221, 221),
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          )),
-                      width: 110,
-                      height: 50,
-                      child: TextField(
-                        controller: _lastNameController,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "lastname",
-                            hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 192, 191, 191))),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-
-              //email
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  Container(
-                    width: 120,
-                    child: Text(
-                      "Email",
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 221, 221, 221),
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          )),
-                      width: 270,
-                      height: 50,
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(border: InputBorder.none),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              //password
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  Container(
-                    width: 120,
-                    child: Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 221, 221, 221),
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          )),
-                      width: 270,
-                      height: 50,
-                      child: TextField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(border: InputBorder.none),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              //register
-              SizedBox(
-                height: 50,
-              ),
-              Container(
-                height: 40,
-                width: 175,
-                padding: EdgeInsets.symmetric(horizontal: 25.0),
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple,
-                  border: Border.all(color: Colors.deepPurple),
-                  borderRadius: BorderRadius.circular(12),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8.0, .8, 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                // phone number
+                SizedBox(
+                  height: 30,
                 ),
-                child: Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    GestureDetector(
-                      onTap: signUp,
-                      child: Center(
-                        child: Text(
-                          'Register',
-                          style: GoogleFonts.bebasNeue(
+                    Text(
+                      "Register Up",
+                      style: GoogleFonts.bebasNeue(
+                          fontSize: 46, color: Colors.white),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 70),
+                Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      child: Text(
+                        "Phone number",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 25, color: Colors.white),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 44, 44, 44),
+                          border: Border.all(
+                              color: Color.fromARGB(255, 44, 44, 44)),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        width: 270,
+                        height: 50,
+                        child: TextField(
+                          controller: _phoneNumberController,
+                          decoration: InputDecoration(border: InputBorder.none),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                //Name
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      child: Text(
+                        "Name",
+                        style: GoogleFonts.bebasNeue(
                             fontSize: 25,
-                            color: Colors.yellow,
-                          ),
+                            color: Color.fromARGB(255, 255, 255, 255)),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 44, 44, 44),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 44, 44, 44)),
+                            borderRadius: BorderRadius.circular(
+                              12,
+                            )),
+                        width: 150,
+                        height: 50,
+                        child: TextField(
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 255, 255, 255)),
+                          controller: _firstNameController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "firstname",
+                              hintStyle: GoogleFonts.bebasNeue(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 75, 75, 75))),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 1.0),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 44, 44, 44),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 44, 44, 44)),
+                            borderRadius: BorderRadius.circular(
+                              12,
+                            )),
+                        width: 110,
+                        height: 50,
+                        child: TextField(
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 255, 255, 255)),
+                          controller: _lastNameController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "lastname",
+                              hintStyle: GoogleFonts.bebasNeue(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 75, 75, 75))),
                         ),
                       ),
                     )
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              // already member
-              Row(
-                // ignore: prefer_const_literals_to_create_immutables
-                mainAxisAlignment: MainAxisAlignment.center,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  Text(
-                    "Already a member?",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (builder) => LoginPage()));
-                    },
-                    child: Text(
-                      " Signin now",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+
+                //email
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      child: Text(
+                        "Email",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 25, color: Colors.white),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 44, 44, 44),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 44, 44, 44)),
+                            borderRadius: BorderRadius.circular(
+                              12,
+                            )),
+                        width: 270,
+                        height: 50,
+                        child: TextField(
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 255, 255, 255)),
+                          controller: _emailController,
+                          decoration: InputDecoration(border: InputBorder.none),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                //password
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      child: Text(
+                        "Password",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 25, color: Colors.white),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 44, 44, 44),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 44, 44, 44)),
+                            borderRadius: BorderRadius.circular(
+                              12,
+                            )),
+                        width: 270,
+                        height: 50,
+                        child: TextField(
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 255, 255, 255)),
+                          controller: _passwordController,
+                          decoration: InputDecoration(border: InputBorder.none),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                //register
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  height: 40,
+                  width: 175,
+                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    border: Border.all(color: Colors.yellow),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                ],
-              )
-            ],
-          ),
-        )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      GestureDetector(
+                        onTap: signUp,
+                        child: Center(
+                          child: Text(
+                            'Register',
+                            style: GoogleFonts.bebasNeue(
+                              fontSize: 25,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                // already member
+                Row(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    Text(
+                      "Already a member?",
+                      style: GoogleFonts.bebasNeue(
+                          fontSize: 15, color: Colors.white),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (builder) => LoginPage()));
+                      },
+                      child: Text(
+                        " Signin now",
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 15,
+                            color: Colors.yellow,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }

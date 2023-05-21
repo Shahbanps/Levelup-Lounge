@@ -56,30 +56,6 @@ class _ViePCwBookingPageState extends State<ViewPCBookingPage> {
 
   DateTime selectedDate = DateTime.now();
 
-  // void updateSum(int index) {
-  //   int count = 0;
-  //   for (var x in seats) {
-  //     seats[count] = 0;
-  //     count += 1;
-  //   }
-  //   count = 0;
-
-  //   for (var x in isSelectedSlot) {
-  //     if (x) {
-  //       seats[count] += index + 1;
-  //     }
-  //     count += 1;
-  //   }
-  //   int sum = 0;
-  //   for (var x in seats) {
-  //     sum += x;
-  //   }
-  //   print(sum * 100);
-  //   setState(() {
-  //     totalPrice = sum * 100;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

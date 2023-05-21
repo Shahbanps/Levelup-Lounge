@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:levelup/User/pc/pc_details_page.dart';
@@ -16,6 +17,25 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    Future<String> getUserName() async {
+      if (user != null) {
+        // Access the "users" collection in Firestore
+        final snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        if (snapshot.exists) {
+          // Access the "firstName" field of the user document
+          return snapshot.data()!['firstName'];
+        }
+      }
+
+      return ''; // Return an empty string if the user is not found or name is not available
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -42,18 +62,28 @@ class Dashboard extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 15,
-            ),
+            SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Hello Shahban! Ready to Play.',
-                style: GoogleFonts.bebasNeue(
-                  fontSize: 56,
-                  color: Colors.white,
-                ),
-              ),
+              child: FutureBuilder<String>(
+                  future: getUserName(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // While waiting for the result, show a loading indicator
+                      return CircularProgressIndicator();
+                    } else {
+                      // Once the result is available, display the greeting
+                      final userName = snapshot.data ?? 'Guest';
+
+                      return Text(
+                        'Hello $userName! Ready to Play.',
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 56,
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+                  }),
             ),
             Container(
                 height: 225,
@@ -76,11 +106,11 @@ class Dashboard extends StatelessWidget {
                           url: "assets/0.jpg"),
                       CarouselBox(
                           description:
-                              'Escape reality and enter a world of adventure at our gaming center!',
+                              'Step into a realm of excitement and leave reality behind as you embark on thrilling gaming experiences at our center!',
                           url: "assets/1.jpg"),
                       CarouselBox(
                           description:
-                              'Escape reality and enter a world of adventure at our gaming center!',
+                              'Immerse yourself in a world of endless possibilities and let your imagination soar at our gaming center!',
                           url: "assets/2.jpg"),
                     ])),
             SizedBox(
@@ -178,7 +208,6 @@ class Dashboard extends StatelessWidget {
               ],
             ),
             Row(
-              // ignore: prefer_const_literals_to_create_immutables
               children: [
                 Padding(
                   padding: EdgeInsets.fromLTRB(65, 10, 10, 10),
