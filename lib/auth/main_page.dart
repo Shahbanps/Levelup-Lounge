@@ -66,7 +66,7 @@ import 'package:levelup/User/dashboard.dart';
 import 'package:levelup/pages/login.dart';
 
 import '../Owner/admin_navbar.dart';
-import '../pages/user_nav_bar.dart';
+import '../pages/User_nav_bar.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);

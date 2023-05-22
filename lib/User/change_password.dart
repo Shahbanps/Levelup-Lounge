@@ -144,6 +144,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       String newPassword = _newPasswordController.text;
                       _updatePassword(newPassword);
                     }
+                    Navigator.pop(context);
                   },
                   child: Text(
                     'Save Changes',

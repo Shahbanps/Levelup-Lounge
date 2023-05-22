@@ -38,6 +38,7 @@ class Dashboard extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: Center(
           child: Text(

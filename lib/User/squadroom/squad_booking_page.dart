@@ -6,6 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../pages/user_nav_bar.dart';
+
 class SquadBookingPage extends StatefulWidget {
   const SquadBookingPage({Key? key}) : super(key: key);
 
@@ -136,6 +138,7 @@ class _SquadBookingPageState extends State<SquadBookingPage> {
             textColor: Colors.white,
           );
           print('Data stored successfully!');
+          Navigator.pop(context);
         }).catchError((error) {
           Fluttertoast.showToast(
             msg: 'An error occurred while booking slots. Please try again.',
