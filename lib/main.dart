@@ -10,7 +10,7 @@ import 'package:levelup/pages/registration.dart';
 
 import 'Owner/admin_store_dashboard.dart';
 import 'Owner/admin_edit_item.dart';
-import 'Owner/pc/view_pc_bookings.dart';
+import 'Owner/view_bookings.dart';
 
 import 'User/dashboard.dart';
 import 'User/feedback.dart';

@@ -17,6 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   String errorMessage = '';
 
   Future signIn() async {
+    // Close the keyboard
+    FocusScope.of(context).unfocus();
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),

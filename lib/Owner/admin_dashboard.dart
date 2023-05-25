@@ -5,12 +5,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:levelup/Owner/pc/view_pc_bookings.dart';
+import 'package:levelup/Owner/view_bookings.dart';
 import 'package:levelup/User/pc/pc_details_page.dart';
 
 import '../User/carousel.dart';
-import 'driving setup/view_driving_bookings.dart';
-import 'squad room/view_squad_bookings.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -29,14 +27,6 @@ class AdminDashboard extends StatelessWidget {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              // Handle notification icon press here
-            },
-          ),
-        ],
         backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
       backgroundColor: Color.fromARGB(255, 20, 20, 20),
@@ -49,7 +39,7 @@ class AdminDashboard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Hello Shahban! Ready to Play.',
+                'Hello Owner! Ready to Manage.',
                 style: GoogleFonts.bebasNeue(
                   fontSize: 56,
                   color: Colors.white,
@@ -77,11 +67,11 @@ class AdminDashboard extends StatelessWidget {
                           url: "assets/0.jpg"),
                       CarouselBox(
                           description:
-                              'Escape reality and enter a world of adventure at our gaming center!',
+                              'Step into a realm of excitement and leave reality behind as you embark on thrilling gaming experiences at our center!',
                           url: "assets/1.jpg"),
                       CarouselBox(
                           description:
-                              'Escape reality and enter a world of adventure at our gaming center!',
+                              'Immerse yourself in a world of endless possibilities and let your imagination soar at our gaming center!',
                           url: "assets/2.jpg"),
                     ])),
             SizedBox(
@@ -93,7 +83,7 @@ class AdminDashboard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Book your slots now!',
+                    'Manage the slots!',
                     style: GoogleFonts.bebasNeue(
                       fontSize: 30,
                       color: Colors.white,
@@ -108,7 +98,7 @@ class AdminDashboard extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
                   child: Container(
                     height: 150,
-                    width: 120,
+                    width: 400,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/3.jpg'),
@@ -128,91 +118,20 @@ class AdminDashboard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Container(
-                    height: 150,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/4.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                      color: Color.fromARGB(255, 105, 105, 106),
-                      border:
-                          Border.all(color: Color.fromARGB(255, 20, 20, 20)),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ViewSquadBookingPage(),
-                        ));
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 15, 0),
-                  child: Container(
-                    height: 150,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/5.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                      color: Color.fromARGB(255, 105, 105, 106),
-                      border:
-                          Border.all(color: Color.fromARGB(255, 20, 20, 20)),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ViewDrivingBookingPage(),
-                        ));
-                      },
-                    ),
-                  ),
-                ),
               ],
             ),
             Row(
               // ignore: prefer_const_literals_to_create_immutables
               children: [
+                SizedBox(width: 50),
                 Padding(
                   padding: EdgeInsets.fromLTRB(65, 10, 10, 10),
                   child: Center(
                     child: Text(
-                      "PC",
+                      "PC / Squad Room / Driving Setup",
                       style: GoogleFonts.bebasNeue(
                         fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(85, 10, 10, 10),
-                  child: Center(
-                    child: Text(
-                      "Squad Room",
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(47, 10, 10, 10),
-                  child: Center(
-                    child: Text(
-                      "Driving Setup",
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 20,
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
                   ),

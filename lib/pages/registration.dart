@@ -60,10 +60,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
         'email': _emailController.text.trim(),
         'type': "user",
       });
+      Navigator.pop(context);
 
       // Navigate to the home screen or any other desired screen
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
     } catch (e) {
       print(e);
       // Show error message to user
@@ -137,6 +136,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         width: 270,
                         height: 50,
                         child: TextField(
+                          style: GoogleFonts.bebasNeue(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 255, 255, 255)),
                           controller: _phoneNumberController,
                           decoration: InputDecoration(border: InputBorder.none),
                         ),
@@ -341,8 +343,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (builder) => LoginPage()));
+                        Navigator.pop(context);
                       },
                       child: Text(
                         " Signin now",

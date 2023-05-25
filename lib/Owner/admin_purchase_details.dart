@@ -109,7 +109,7 @@ class _PurchaseAdminPageState extends State<PurchaseAdminPage> {
         title: Text(
           'Purchase Details',
           style: GoogleFonts.bebasNeue(
-            fontSize: 20,
+            fontSize: 25,
             color: Color.fromARGB(255, 224, 224, 224),
           ),
         ),

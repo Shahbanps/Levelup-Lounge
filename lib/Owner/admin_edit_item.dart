@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
-
 class EditItem extends StatefulWidget {
   final String productId;
 
@@ -155,6 +154,7 @@ class _EditItemState extends State<EditItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0,
         title: Text(
@@ -166,170 +166,172 @@ class _EditItemState extends State<EditItem> {
         ),
         backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
-      body: Container(
-        color: Color.fromARGB(255, 0, 0, 0),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 90,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 26, 26, 26),
-                borderRadius: BorderRadius.circular(20.0),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Color.fromARGB(255, 0, 0, 0),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 90,
               ),
-              padding: EdgeInsets.all(16.0),
-              child: Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      controller: _nameController,
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'New Name',
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.yellow),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the item name';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      controller: _priceController,
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'New Price',
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.yellow),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the item price';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    if (pickedFile != null)
-                      SizedBox(
-                        height: 300,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.file(
-                            File(pickedFile!.path!),
-                          ),
-                        ),
-                      ),
-                    if (pickedFile == null)
-                      GestureDetector(
-                        onTap: selectFile,
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.yellow,
-                          ),
-                        ),
-                      ),
-                    if (pickedFile != null)
-                      GestureDetector(
-                        onTap: selectFile,
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.yellow,
-                          ),
-                        ),
-                      ),
-                    SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        removeProduct();
-                      },
-                      child: Text(
-                        'Remove Item',
-                        style: GoogleFonts.bebasNeue(
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.yellow),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        updateProduct();
-                      },
-                      child: Text(
-                        'Save Changes',
-                        style: GoogleFonts.bebasNeue(
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.yellow),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 26, 26, 26),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-              ),
-            )
-          ],
+                padding: EdgeInsets.all(16.0),
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _nameController,
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'New Name',
+                          labelStyle: TextStyle(color: Colors.white),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.yellow),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the item name';
+                          }
+                          return null;
+                        },
+                      ),
+                      TextFormField(
+                        controller: _priceController,
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'New Price',
+                          labelStyle: TextStyle(color: Colors.white),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.yellow),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the item price';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      if (pickedFile != null)
+                        SizedBox(
+                          height: 300,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.file(
+                              File(pickedFile!.path!),
+                            ),
+                          ),
+                        ),
+                      if (pickedFile == null)
+                        GestureDetector(
+                          onTap: selectFile,
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.yellow,
+                            ),
+                          ),
+                        ),
+                      if (pickedFile != null)
+                        GestureDetector(
+                          onTap: selectFile,
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.yellow,
+                            ),
+                          ),
+                        ),
+                      SizedBox(height: 16.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          removeProduct();
+                        },
+                        child: Text(
+                          'Remove Item',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.yellow),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          updateProduct();
+                        },
+                        child: Text(
+                          'Save Changes',
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.yellow),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

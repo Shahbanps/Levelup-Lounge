@@ -49,14 +49,14 @@ class Dashboard extends StatelessWidget {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              // Handle notification icon press here
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.notifications),
+        //     onPressed: () {
+        //       // Handle notification icon press here
+        //     },
+        //   ),
+        // ],
         backgroundColor: Color.fromARGB(255, 0, 0, 0),
       ),
       backgroundColor: Color.fromARGB(255, 20, 20, 20),

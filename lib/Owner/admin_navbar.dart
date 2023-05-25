@@ -52,9 +52,9 @@ class _AdminNavbarState extends State<AdminNavbar> {
             tabs: const [
               GButton(
                 icon: Icons.home_filled,
-                text: 'Admin',
+                text: 'Home',
               ),
-              GButton(icon: Icons.store_rounded, text: 'admin'),
+              GButton(icon: Icons.store_rounded, text: 'Store'),
               GButton(icon: Icons.feedback_rounded, text: 'Feedback'),
               GButton(icon: Icons.person_2_rounded, text: 'Profile'),
             ],
