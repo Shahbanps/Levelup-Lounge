@@ -1,4 +1,4 @@
-# screenshots
+# Screenshots
 
 <img src = "https://github.com/Shahbanps/Levelup-Lounge/assets/93571329/c008c423-1bf6-4ad5-8385-3765bacf641e" width = 200 height = "400">
 <img src = "https://github.com/Shahbanps/Levelup-Lounge/assets/93571329/f934cd24-5585-4bb5-bc9e-dcb0c9c183d3" width = 200 height = "400">
